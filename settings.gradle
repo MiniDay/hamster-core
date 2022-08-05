@@ -1,0 +1,5 @@
+rootProject.name = 'hamster-core'
+include 'hamster-core-common'
+include 'hamster-core-bukkit'
+include 'hamster-core-proxy'
+

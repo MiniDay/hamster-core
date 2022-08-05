@@ -1,0 +1,63 @@
+setArchivesBaseName("HamsterCore-Proxy")
+
+evaluationDependsOn(':hamster-core-common')
+
+configurations {
+    api.extendsFrom apiShade
+    implementation.extendsFrom implementationShade
+}
+
+dependencies {
+    compileOnly project(":hamster-core-common")
+    //noinspection GradlePackageUpdate
+    compileOnly('net.md-5:bungeecord-api:1.17-R0.1-SNAPSHOT')
+
+    // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+    //noinspection GradlePackageUpdate
+    apiShade 'com.zaxxer:HikariCP:4.0.3'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    apiShade 'com.squareup.okhttp3:okhttp:4.10.0'
+    // https://mvnrepository.com/artifact/net.kyori/adventure-platform-bungeecord
+    apiShade 'net.kyori:adventure-platform-bungeecord:4.1.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+processResources {
+    inputs.property "version", project.version
+    filesMatching("bungee.yml") {
+        expand "version": project.version
+    }
+}
+
+task addSource {
+    doLast {
+        sourceSets {
+            main {
+                java.srcDirs += [
+                        project(':hamster-core-common').sourceSets.main.java
+                ]
+                resources.srcDirs += [
+                        project(':hamster-core-common').sourceSets.main.resources
+                ]
+            }
+        }
+    }
+}
+classes.dependsOn(addSource)
+
+jar {
+    from([
+            configurations.implementationShade.collect {
+                it.isDirectory() ? it : zipTree(it)
+            },
+            configurations.apiShade.collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
+    ])
+}

@@ -1,0 +1,29 @@
+setArchivesBaseName("HamsterCore-Common")
+
+dependencies {
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    //noinspection GradlePackageUpdate
+    compileOnly 'com.google.code.gson:gson:2.8.0'
+
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    api 'com.squareup.okhttp3:okhttp:4.10.0'
+
+    // https://mvnrepository.com/artifact/net.kyori/adventure-api
+    api 'net.kyori:adventure-api:4.11.0'
+    // https://mvnrepository.com/artifact/net.kyori/adventure-text-minimessage
+    api 'net.kyori:adventure-text-minimessage:4.11.0'
+//    // https://mvnrepository.com/artifact/net.kyori/adventure-platform-api
+//    implementation 'net.kyori:adventure-platform-api:4.1.2'
+
+    // https://mvnrepository.com/artifact/net.kyori/adventure-text-serializer-gson
+    api 'net.kyori:adventure-text-serializer-gson:4.11.0'
+    // https://mvnrepository.com/artifact/net.kyori/adventure-text-serializer-legacy
+    api 'net.kyori:adventure-text-serializer-legacy:4.11.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+}
+
+test {
+    useJUnitPlatform()
+}
