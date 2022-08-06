@@ -18,6 +18,11 @@ subprojects {
         }
     }
 
+    configurations {
+        api.extendsFrom apiShade
+        implementation.extendsFrom implementationShade
+    }
+
     dependencies {
         compileOnly group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
     }
@@ -38,14 +43,10 @@ subprojects {
         withSourcesJar()
     }
 
-    jar {
-        destinationDir(rootProject.buildDir)
-    }
-
     publishing {
         publications {
             mavenJava(MavenPublication) {
-                from getProject().getComponents().java
+                from project.components.java
             }
         }
         repositories {
@@ -56,8 +57,8 @@ subprojects {
                 url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
 
                 credentials {
-                    username rootProject.getProperties().getOrDefault("maven_username", "")
-                    password rootProject.getProperties().getOrDefault("maven_password", "")
+                    username rootProject.properties.getOrDefault("maven_username", "")
+                    password rootProject.properties.getOrDefault("maven_password", "")
                 }
             }
         }

@@ -2,13 +2,10 @@ setArchivesBaseName("HamsterCore-Bukkit")
 
 evaluationDependsOn(':hamster-core-common')
 
-configurations {
-    api.extendsFrom apiShade
-    implementation.extendsFrom implementationShade
-}
-
 dependencies {
-    compileOnly project(":hamster-core-common")
+    apiShade(project(":hamster-core-common")) {
+        exclude group: "*"
+    }
     compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
 
     // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
@@ -34,24 +31,13 @@ processResources {
     }
 }
 
-task addSource {
-    doLast {
-        sourceSets {
-            main {
-                java.srcDirs += [
-                        project(':hamster-core-common').sourceSets.main.java
-                ]
-                resources.srcDirs += [
-                        project(':hamster-core-common').sourceSets.main.resources
-                ]
-            }
-        }
-    }
-}
-classes.dependsOn(addSource)
-
-jar {
+tasks.compileJava.dependsOn(":hamster-core-common:build")
+tasks.create("shadowJar", Jar) {
+    dependsOn("jar")
     from([
+            tasks.jar.outputs.files.collect {
+                it.isDirectory() ? it : zipTree(it)
+            },
             configurations.implementationShade.collect {
                 it.isDirectory() ? it : zipTree(it)
             },
@@ -59,4 +45,6 @@ jar {
                 it.isDirectory() ? it : zipTree(it)
             }
     ])
+    destinationDir(getRootProject().buildDir)
 }
+tasks.build.dependsOn(shadowJar)
