@@ -11,7 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 
-public abstract class PageManager {
+public class PageManager {
     private static final HashMap<String, PageConfig> PAGE_CONFIG = new HashMap<>();
 
     public static PageConfig getPageConfig(Class<?> clazz) {
