@@ -18,38 +18,24 @@ import org.jetbrains.annotations.NotNull;
  */
 @SuppressWarnings("unused")
 public abstract class PageHandler implements InventoryHolder {
-    private final PageConfig pageConfig;
+    private final PageConfig config;
     private final HumanEntity player;
     private final Inventory inventory;
 
     public PageHandler(@NotNull HumanEntity player) {
         try {
-            pageConfig = PageManager.getPageConfig(getClass());
+            config = PageManager.getPageConfig(getClass());
         } catch (Exception e) {
             throw new IllegalArgumentException("加载界面配置时遇到了一个异常!", e);
         }
         this.player = player;
-        inventory = Bukkit.createInventory(this, pageConfig.getInventory().getSize(), pageConfig.getTitle());
+        inventory = Bukkit.createInventory(this, config.getInventory().getSize(), getTitle());
     }
 
-    public PageHandler(@NotNull HumanEntity player, @NotNull String title) {
-        try {
-            pageConfig = PageManager.getPageConfig(getClass());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("加载界面配置时遇到了一个异常!", e);
-        }
+    public PageHandler(@NotNull PageConfig config, @NotNull HumanEntity player) {
+        this.config = config;
         this.player = player;
-        inventory = Bukkit.createInventory(this, pageConfig.getInventory().getSize(), title);
-    }
-
-    public PageHandler(@NotNull PageConfig pageConfig, @NotNull HumanEntity player) {
-        this(pageConfig, pageConfig.getTitle(), player);
-    }
-
-    public PageHandler(@NotNull PageConfig pageConfig, @NotNull String title, @NotNull HumanEntity player) {
-        this.pageConfig = pageConfig;
-        this.player = player;
-        inventory = Bukkit.createInventory(this, pageConfig.getInventory().getSize(), title);
+        inventory = Bukkit.createInventory(this, config.getInventory().getSize(), getTitle());
     }
 
     public abstract void initPage();
@@ -72,7 +58,9 @@ public abstract class PageHandler implements InventoryHolder {
     }
 
     public void onPlayButtonSound(@NotNull ClickType clickType, @NotNull InventoryAction action, int index) {
-        Sound sound = getPageConfig().getButtonSound(getButtonGroup().getButtonName(index));
+        PageConfig config = getConfig();
+        Sound sound = config.getButtonSound(getButtonGroup().getButtonName(index));
+        sound = sound == null ? config.getButtonSound("default") : sound;
         if (sound == null) {
             return;
         }
@@ -108,8 +96,8 @@ public abstract class PageHandler implements InventoryHolder {
     }
 
     @NotNull
-    public PageConfig getPageConfig() {
-        return pageConfig;
+    public PageConfig getConfig() {
+        return config;
     }
 
     @NotNull
@@ -119,7 +107,12 @@ public abstract class PageHandler implements InventoryHolder {
 
     @NotNull
     public ButtonGroup getButtonGroup() {
-        return getPageConfig().getButtonGroup("default");
+        return getConfig().getButtonGroup("default");
+    }
+
+    @NotNull
+    public String getTitle() {
+        return config.getTitle();
     }
 
     @NotNull

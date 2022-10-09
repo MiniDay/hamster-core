@@ -34,7 +34,7 @@ public class FixedPageHandler extends PageHandler {
         HumanEntity player = getPlayer();
 
         Inventory inventory = getInventory();
-        PageConfig config = getPageConfig();
+        PageConfig config = getConfig();
         ButtonGroup group = getButtonGroup();
 
         List<String> graphic = config.getGraphic();

@@ -130,7 +130,7 @@ public abstract class PageableHandler<E extends PageElement> extends FixedPageHa
             onClickElement(event.getClick(), event.getAction(), e);
             return;
         }
-        String name = getPageConfig().getButtonName(event.getCurrentItem());
+        String name = getConfig().getButtonName(event.getCurrentItem());
         if (name.equalsIgnoreCase(nextButtonName)) {
             showNextPage();
             return;
