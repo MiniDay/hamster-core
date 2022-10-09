@@ -17,16 +17,8 @@ public class FixedPageHandler extends PageHandler {
         super(player);
     }
 
-    public FixedPageHandler(@NotNull HumanEntity player, @NotNull String title) {
-        super(player, title);
-    }
-
-    public FixedPageHandler(@NotNull PageConfig pageConfig, @NotNull HumanEntity player) {
-        super(pageConfig, player);
-    }
-
-    public FixedPageHandler(@NotNull PageConfig pageConfig, @NotNull String title, @NotNull HumanEntity player) {
-        super(pageConfig, title, player);
+    public FixedPageHandler(@NotNull PageConfig config, @NotNull HumanEntity player) {
+        super(config, player);
     }
 
     @Override
