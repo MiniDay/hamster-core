@@ -1,7 +1,7 @@
 package cn.hamster3.mc.plugin.core.bukkit;
 
 import cn.hamster3.mc.plugin.core.bukkit.page.listener.PageListener;
-import cn.hamster3.mc.plugin.core.common.constant.ConstantObjects;
+import cn.hamster3.mc.plugin.core.common.constant.CoreConstantObjects;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,9 +39,9 @@ public class HamsterCorePlugin extends JavaPlugin {
     public void onDisable() {
         long start = System.currentTimeMillis();
         getLogger().info("仓鼠核心正在关闭...");
-        ConstantObjects.WORKER_EXECUTOR.shutdownNow();
+        CoreConstantObjects.WORKER_EXECUTOR.shutdownNow();
         getLogger().info("已暂停 WORKER_EXECUTOR.");
-        ConstantObjects.SCHEDULED_EXECUTOR.shutdownNow();
+        CoreConstantObjects.SCHEDULED_EXECUTOR.shutdownNow();
         getLogger().info("已暂停 SCHEDULED_EXECUTOR.");
         long time = System.currentTimeMillis() - start;
         getLogger().info("仓鼠核心已关闭，总计耗时 " + time + " ms.");

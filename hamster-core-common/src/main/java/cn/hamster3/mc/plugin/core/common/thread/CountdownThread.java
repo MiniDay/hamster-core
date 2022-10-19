@@ -1,6 +1,6 @@
 package cn.hamster3.mc.plugin.core.common.thread;
 
-import cn.hamster3.mc.plugin.core.common.constant.ConstantObjects;
+import cn.hamster3.mc.plugin.core.common.constant.CoreConstantObjects;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +23,7 @@ public abstract class CountdownThread implements Runnable {
     }
 
     public void start(long initialDelay) {
-        future = ConstantObjects.SCHEDULED_EXECUTOR.scheduleWithFixedDelay(this, initialDelay, interval, TimeUnit.MILLISECONDS);
+        future = CoreConstantObjects.SCHEDULED_EXECUTOR.scheduleWithFixedDelay(this, initialDelay, interval, TimeUnit.MILLISECONDS);
     }
 
     @Override

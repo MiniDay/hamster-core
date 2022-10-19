@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Type;
 import java.util.concurrent.*;
 
-public interface ConstantObjects {
+public interface CoreConstantObjects {
     /**
      * GSON 工具
      */
@@ -23,6 +23,10 @@ public interface ConstantObjects {
             .serializeNulls()
             .setPrettyPrinting()
             .create();
+    /**
+     * JSON 解析器
+     */
+    JsonParser JSON_PARSER = new JsonParser();
 
     /**
      * 调度器线程
