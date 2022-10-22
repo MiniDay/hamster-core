@@ -1,10 +1,10 @@
-# HamsterCore
+# [HamsterCore](https://github.com/MiniDay/hamster-core)
 
 仓鼠核心：Minecraft 插件开发通用工具包
 
 # 添加依赖
 
-## 对于 Gradle (`build.gradle`)
+## Gradle (`build.gradle`)
 
 ```groovy
 // 添加仓库
@@ -22,7 +22,7 @@ dependencies {
 }
 ```
 
-## 对于 Maven (`pom.xml`)
+## Maven (`pom.xml`)
 
 ```xml
 
