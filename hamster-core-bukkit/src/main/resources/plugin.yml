@@ -1,3 +1,22 @@
 name: HamsterCore
 main: cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin
 version: ${version}
+
+author: MiniDay
+website: https://github.com/MiniDay/hamster-core
+description: 仓鼠核心：Minecraft 插件开发通用工具包
+
+softdepend:
+  - Vault
+  - PlayerPoints
+
+commands:
+  hamstercore:
+    aliases: [ hcore, core ]
+    description: 仓鼠核心调试指令
+    permission: hamster.core.admin
+    permission-message: §c你没有这个权限！
+
+permissions:
+  hamster.core.admin:
+    default: op

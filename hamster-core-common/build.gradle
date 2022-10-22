@@ -13,7 +13,7 @@ dependencies {
     // https://mvnrepository.com/artifact/net.kyori/adventure-text-minimessage
     api 'net.kyori:adventure-text-minimessage:4.11.0'
     // https://mvnrepository.com/artifact/net.kyori/adventure-platform-api
-    implementation 'net.kyori:adventure-platform-api:4.1.2'
+    api 'net.kyori:adventure-platform-api:4.1.2'
 
     // https://mvnrepository.com/artifact/net.kyori/adventure-text-serializer-gson
     api 'net.kyori:adventure-text-serializer-gson:4.11.0'

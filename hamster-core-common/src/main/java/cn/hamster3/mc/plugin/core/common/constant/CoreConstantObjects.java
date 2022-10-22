@@ -5,9 +5,16 @@ import com.google.gson.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
+import java.util.UUID;
 import java.util.concurrent.*;
 
+@SuppressWarnings("unused")
 public interface CoreConstantObjects {
+    /**
+     * Minecraft 默认指定的空 UUID
+     */
+    UUID NIL_UUID = new UUID(0L, 0L);
+
     /**
      * GSON 工具
      */
@@ -29,13 +36,13 @@ public interface CoreConstantObjects {
     JsonParser JSON_PARSER = new JsonParser();
 
     /**
-     * 调度器线程
-     */
-    ScheduledExecutorService SCHEDULED_EXECUTOR = Executors.newScheduledThreadPool(1, new APIThreadFactory("HamsterCore - Scheduler"));
-    /**
      * 异步线程
      */
     ExecutorService WORKER_EXECUTOR = new ThreadPoolExecutor(1, Integer.MAX_VALUE, 60, TimeUnit.MINUTES, new SynchronousQueue<>(), new APIThreadFactory("HamsterCore - Executor"));
+    /**
+     * 调度器线程
+     */
+    ScheduledExecutorService SCHEDULED_EXECUTOR = Executors.newScheduledThreadPool(1, new APIThreadFactory("HamsterCore - Scheduler"));
 
     class APIThreadFactory implements ThreadFactory {
         private final String name;

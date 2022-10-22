@@ -11,7 +11,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 
-public class SerializeUtils {
+/**
+ * 序列化相关工具
+ */
+public final class SerializeUtils {
+    private SerializeUtils() {
+    }
+
+    /**
+     * 将 adventure 中的 title 对象序列化为 json
+     *
+     * @param title -
+     * @return -
+     */
     @NotNull
     public static JsonObject serializeTitle(@NotNull Title title) {
         JsonObject object = new JsonObject();
@@ -24,6 +36,12 @@ public class SerializeUtils {
         return object;
     }
 
+    /**
+     * 将 json 反序列化为 adventure 中的 title
+     *
+     * @param object -
+     * @return -
+     */
     @NotNull
     public static Title deserializeTitle(@NotNull JsonObject object) {
         if (object.has("times")) {

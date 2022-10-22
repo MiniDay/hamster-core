@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'cn.hamster3.mc.plugin'
-version '0.0.1-SNAPSHOT'
+version '1.0.0'
 
 subprojects {
     apply plugin: 'java-library'
@@ -19,12 +19,14 @@ subprojects {
     }
 
     configurations {
+        shade
         api.extendsFrom apiShade
         implementation.extendsFrom implementationShade
     }
 
     dependencies {
-        compileOnly group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
+        // https://mvnrepository.com/artifact/org.jetbrains/annotations
+        compileOnly 'org.jetbrains:annotations:23.0.0'
     }
 
     tasks.withType(JavaCompile) {

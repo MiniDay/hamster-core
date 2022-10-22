@@ -6,15 +6,19 @@ import java.util.Collections;
 import java.util.Stack;
 
 /**
- * 算数表达式求值
+ * 算数表达式求值工具
+ * <p>
  * 传入算数表达式，将返回一个浮点值结果
+ * <p>
  * 如果计算过程错误，将返回一个NaN
  * <p>
  * 我也忘了这个类是哪里抄来的
- * 反正它运行起来比直接用JavaScript引擎计算要快很多
+ * <p>
+ * 反正它运行起来比直接用 JavaScript 引擎计算要快很多
  */
 @SuppressWarnings("unused")
-public class Calculator {
+public final class Calculator {
+    public static final Calculator INSTANCE = new Calculator();
     // 默认除法运算精度
     private static final int DEF_DIV_SCALE = 16;
 

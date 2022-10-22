@@ -1,28 +1,27 @@
-package cn.hamster3.mc.plugin.core.bukkit.api;
+package cn.hamster3.mc.plugin.core.bungee.api;
 
-import cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin;
+import cn.hamster3.mc.plugin.core.bungee.HamsterCorePlugin;
+import cn.hamster3.mc.plugin.core.bungee.util.BungeeCordUtils;
 import cn.hamster3.mc.plugin.core.common.api.CoreAPI;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import net.kyori.adventure.platform.AudienceProvider;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
+import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
+import net.md_5.bungee.config.Configuration;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-public class CoreBukkitAPI extends CoreAPI {
-    private final BukkitAudiences audienceProvider;
+public class CoreBungeeAPI extends CoreAPI {
+    private final BungeeAudiences audienceProvider;
     private final HikariDataSource datasource;
 
-    public CoreBukkitAPI() {
+    public CoreBungeeAPI() {
         HamsterCorePlugin plugin = HamsterCorePlugin.getInstance();
-        audienceProvider = BukkitAudiences.create(plugin);
+        audienceProvider = BungeeAudiences.create(plugin);
 
-        plugin.saveDefaultConfig();
-        FileConfiguration config = plugin.getConfig();
+        Configuration config = BungeeCordUtils.getPluginConfig(plugin);
 
-        ConfigurationSection datasourceConfig = config.getConfigurationSection("datasource");
+        Configuration datasourceConfig = config.getSection("datasource");
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(datasourceConfig.getString("driver"));
         hikariConfig.setJdbcUrl(datasourceConfig.getString("url"));
@@ -35,12 +34,12 @@ public class CoreBukkitAPI extends CoreAPI {
         datasource = new HikariDataSource(hikariConfig);
     }
 
-    public static CoreBukkitAPI getInstance() {
-        return (CoreBukkitAPI) instance;
+    public static CoreBungeeAPI getInstance() {
+        return (CoreBungeeAPI) instance;
     }
 
     public static void init() {
-        instance = new CoreBukkitAPI();
+        instance = new CoreBungeeAPI();
     }
 
     @Override
@@ -51,11 +50,5 @@ public class CoreBukkitAPI extends CoreAPI {
     @Override
     public @NotNull HikariDataSource getDataSource() {
         return datasource;
-    }
-
-    public void reportError(@NotNull String projectID, @NotNull Throwable exception) {
-    }
-
-    public void reportFile(@NotNull String projectID, @NotNull String filename, byte @NotNull [] bytes) {
     }
 }

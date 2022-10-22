@@ -1,12 +1,9 @@
 package cn.hamster3.mc.plugin.core.bukkit.util;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +14,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public class BukkitUtils {
+public final class BukkitUtils {
+    private BukkitUtils() {
+    }
+
     @NotNull
     public static String getMCVersion() {
         return Bukkit.getBukkitVersion().split("-")[0];
@@ -68,8 +68,10 @@ public class BukkitUtils {
 
     /**
      * 获取玩家的头颅
-     * 在1.11以上的服务端中获取头颅材质是在服务器上运行的
-     * 因此建议使用异步线程调用该方法
+     * <p>
+     * 在 1.11 以上的服务端建议使用异步线程调用该方法
+     * <p>
+     * 因为这些服务端中通过网络获取头颅材质是在服务器上运行的
      *
      * @param offlinePlayer 要获取的玩家
      * @return 玩家的头颅物品
@@ -165,30 +167,4 @@ public class BukkitUtils {
         }
         return stack.getType().name();
     }
-
-    /**
-     * 创建 SQL 连接池
-     *
-     * @param config SQL 配置
-     * @return SQL 连接池
-     */
-    @NotNull
-    public static HikariDataSource getHikariDataSource(@NotNull ConfigurationSection config) {
-        HikariConfig hikariConfig = new HikariConfig();
-
-        hikariConfig.setDriverClassName(config.getString("driver"));
-
-        hikariConfig.setJdbcUrl(config.getString("url"));
-        hikariConfig.setUsername(config.getString("user"));
-        hikariConfig.setPassword(config.getString("password"));
-
-        hikariConfig.setMaximumPoolSize(config.getInt("maximumPoolSize", 3));
-        hikariConfig.setMinimumIdle(config.getInt("minimumIdle", 1));
-        hikariConfig.setIdleTimeout(config.getLong("idleTimeout", 5 * 60 * 1000));
-        hikariConfig.setMaxLifetime(config.getLong("maxLifetime", 0));
-
-        return new HikariDataSource(hikariConfig);
-    }
-
-    // todo public static TextComponent getItemDisplayInfo(@NotNull ItemStack stack)
 }

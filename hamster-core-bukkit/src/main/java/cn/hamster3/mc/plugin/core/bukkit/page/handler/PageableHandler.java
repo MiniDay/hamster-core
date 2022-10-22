@@ -1,8 +1,8 @@
 package cn.hamster3.mc.plugin.core.bukkit.page.handler;
 
 import cn.hamster3.mc.plugin.core.bukkit.page.ButtonGroup;
-import cn.hamster3.mc.plugin.core.bukkit.page.PageElement;
 import cn.hamster3.mc.plugin.core.bukkit.page.PageConfig;
+import cn.hamster3.mc.plugin.core.bukkit.page.PageElement;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;

@@ -1,3 +1,0 @@
-name: HamsterCore-Proxy
-main: cn.hamster3.mc.plugin.core.proxy.HamsterCorePlugin
-version: ${version}

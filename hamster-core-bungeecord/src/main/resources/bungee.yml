@@ -1,0 +1,3 @@
+name: HamsterCore-BungeeCord
+main: cn.hamster3.mc.plugin.core.bungee.HamsterCorePlugin
+version: ${version}

@@ -1,9 +1,9 @@
 package cn.hamster3.mc.plugin.core.bukkit.page.handler;
 
-import cn.hamster3.mc.plugin.core.bukkit.page.ButtonGroup;
-import cn.hamster3.mc.plugin.core.bukkit.page.PageManager;
 import cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin;
+import cn.hamster3.mc.plugin.core.bukkit.page.ButtonGroup;
 import cn.hamster3.mc.plugin.core.bukkit.page.PageConfig;
+import cn.hamster3.mc.plugin.core.bukkit.page.PageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.HumanEntity;
