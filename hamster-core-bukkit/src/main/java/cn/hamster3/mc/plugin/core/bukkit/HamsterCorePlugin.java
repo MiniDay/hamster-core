@@ -4,6 +4,7 @@ import cn.hamster3.mc.plugin.core.bukkit.api.CoreBukkitAPI;
 import cn.hamster3.mc.plugin.core.bukkit.command.ParentCommand;
 import cn.hamster3.mc.plugin.core.bukkit.command.debug.BlockInfoCommand;
 import cn.hamster3.mc.plugin.core.bukkit.command.debug.YamlCommand;
+import cn.hamster3.mc.plugin.core.bukkit.command.lore.ParentLoreCommand;
 import cn.hamster3.mc.plugin.core.bukkit.hook.PointAPI;
 import cn.hamster3.mc.plugin.core.bukkit.hook.VaultAPI;
 import cn.hamster3.mc.plugin.core.bukkit.listener.CallbackListener;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class HamsterCorePlugin extends JavaPlugin {
-    private static final ParentCommand COMMAND_EXECUTOR = new ParentCommand("core");
+    public static final ParentCommand COMMAND_EXECUTOR = new ParentCommand("core");
     private static HamsterCorePlugin instance;
 
     public static HamsterCorePlugin getInstance() {
@@ -56,6 +57,9 @@ public class HamsterCorePlugin extends JavaPlugin {
         logger.info("已添加指令: " + BlockInfoCommand.INSTANCE.getName() + " .");
         COMMAND_EXECUTOR.addChildCommand(YamlCommand.INSTANCE);
         logger.info("已添加指令: " + YamlCommand.INSTANCE.getName() + " .");
+        COMMAND_EXECUTOR.addChildCommand(ParentLoreCommand.INSTANCE);
+        logger.info("已添加指令: " + ParentLoreCommand.INSTANCE.getName() + " .");
+
         long time = System.currentTimeMillis() - start;
         logger.info("仓鼠核心已启动，总计耗时 " + time + " ms.");
     }

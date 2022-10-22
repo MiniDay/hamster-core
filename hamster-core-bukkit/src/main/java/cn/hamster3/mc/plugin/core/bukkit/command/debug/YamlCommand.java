@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,8 +38,8 @@ public class YamlCommand extends ChildCommand {
     }
 
     @Override
-    public @Nullable String getPermission() {
-        return null;
+    public boolean hasPermission(@NotNull CommandSender sender) {
+        return true;
     }
 
     @Override

@@ -90,16 +90,11 @@ public final class CommonUtils {
      * 替换颜色代码
      *
      * @param strings 要替换的字符串
-     * @return 替换后的字符串
      */
-    @NotNull
-    public static ArrayList<String> replaceColorCode(@Nullable String[] strings) {
-        ArrayList<String> list = new ArrayList<>();
-        if (strings == null) return list;
-        for (String s : strings) {
-            list.add(replaceColorCode(s));
+    public static void replaceColorCode(@NotNull String[] strings) {
+        for (int i = 0; i < strings.length; i++) {
+            strings[i] = strings[i].replace("&", "§");
         }
-        return list;
     }
 
     @NotNull
