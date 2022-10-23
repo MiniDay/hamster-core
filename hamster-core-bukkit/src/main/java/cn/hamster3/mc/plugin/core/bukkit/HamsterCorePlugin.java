@@ -11,6 +11,7 @@ import cn.hamster3.mc.plugin.core.bukkit.listener.CallbackListener;
 import cn.hamster3.mc.plugin.core.bukkit.listener.DebugListener;
 import cn.hamster3.mc.plugin.core.bukkit.page.listener.PageListener;
 import cn.hamster3.mc.plugin.core.common.constant.CoreConstantObjects;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,6 +24,8 @@ public class HamsterCorePlugin extends JavaPlugin {
     public static final ParentCommand COMMAND_EXECUTOR = new ParentCommand("core");
     private static HamsterCorePlugin instance;
 
+    private BukkitAudiences audienceProvider;
+
     public static HamsterCorePlugin getInstance() {
         return instance;
     }
@@ -34,6 +37,19 @@ public class HamsterCorePlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
+        Logger logger = getLogger();
+        long start = System.currentTimeMillis();
+        logger.info("仓鼠核心正在初始化...");
+        CoreBukkitAPI.init();
+        logger.info("CoreBukkitAPI 已初始化.");
+        COMMAND_EXECUTOR.addChildCommand(BlockInfoCommand.INSTANCE);
+        logger.info("已添加指令: " + BlockInfoCommand.INSTANCE.getName() + " .");
+        COMMAND_EXECUTOR.addChildCommand(YamlCommand.INSTANCE);
+        logger.info("已添加指令: " + YamlCommand.INSTANCE.getName() + " .");
+        COMMAND_EXECUTOR.addChildCommand(ParentLoreCommand.INSTANCE);
+        logger.info("已添加指令: " + ParentLoreCommand.INSTANCE.getName() + " .");
+        long time = System.currentTimeMillis() - start;
+        logger.info("仓鼠核心初始化完成，总计耗时 " + time + " ms.");
     }
 
     @Override
@@ -41,27 +57,20 @@ public class HamsterCorePlugin extends JavaPlugin {
         Logger logger = getLogger();
         long start = System.currentTimeMillis();
         logger.info("仓鼠核心正在启动...");
-        CoreBukkitAPI.init();
-        logger.info("CoreAPI 已初始化.");
         VaultAPI.reloadVaultHook();
         logger.info("完成 VaultAPI 挂载.");
         PointAPI.reloadPlayerPointAPIHook();
         logger.info("完成 PlayerPoints 挂载.");
+        audienceProvider = BukkitAudiences.create(this);
+        logger.info("完成 BukkitAudiences 挂载.");
         Bukkit.getPluginManager().registerEvents(PageListener.INSTANCE, this);
         logger.info("已注册 PageListener.");
         Bukkit.getPluginManager().registerEvents(CallbackListener.INSTANCE, this);
         logger.info("已注册 CallbackListener.");
         Bukkit.getPluginManager().registerEvents(DebugListener.INSTANCE, this);
         logger.info("已注册 DebugListener.");
-        COMMAND_EXECUTOR.addChildCommand(BlockInfoCommand.INSTANCE);
-        logger.info("已添加指令: " + BlockInfoCommand.INSTANCE.getName() + " .");
-        COMMAND_EXECUTOR.addChildCommand(YamlCommand.INSTANCE);
-        logger.info("已添加指令: " + YamlCommand.INSTANCE.getName() + " .");
-        COMMAND_EXECUTOR.addChildCommand(ParentLoreCommand.INSTANCE);
-        logger.info("已添加指令: " + ParentLoreCommand.INSTANCE.getName() + " .");
-
         long time = System.currentTimeMillis() - start;
-        logger.info("仓鼠核心已启动，总计耗时 " + time + " ms.");
+        logger.info("仓鼠核心启动完成，总计耗时 " + time + " ms.");
     }
 
     @Override
@@ -85,5 +94,9 @@ public class HamsterCorePlugin extends JavaPlugin {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         return COMMAND_EXECUTOR.onTabComplete(sender, command, alias, args);
+    }
+
+    public BukkitAudiences getAudienceProvider() {
+        return audienceProvider;
     }
 }

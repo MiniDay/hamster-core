@@ -6,18 +6,15 @@ import cn.hamster3.mc.plugin.core.common.api.CoreAPI;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import net.kyori.adventure.platform.AudienceProvider;
-import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.config.Configuration;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public final class CoreBungeeAPI extends CoreAPI {
-    private final BungeeAudiences audienceProvider;
     private final HikariDataSource datasource;
 
     private CoreBungeeAPI() {
         HamsterCorePlugin plugin = HamsterCorePlugin.getInstance();
-        audienceProvider = BungeeAudiences.create(plugin);
 
         Configuration config = BungeeCordUtils.getPluginConfig(plugin);
 
@@ -47,7 +44,7 @@ public final class CoreBungeeAPI extends CoreAPI {
 
     @Override
     public @NotNull AudienceProvider getAudienceProvider() {
-        return audienceProvider;
+        return HamsterCorePlugin.getInstance().getAudienceProvider();
     }
 
     @Override
