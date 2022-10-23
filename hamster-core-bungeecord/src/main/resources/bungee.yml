@@ -1,3 +1,5 @@
 name: HamsterCore
 main: cn.hamster3.mc.plugin.core.bungee.HamsterCorePlugin
 version: ${version}
+
+author: MiniDay
