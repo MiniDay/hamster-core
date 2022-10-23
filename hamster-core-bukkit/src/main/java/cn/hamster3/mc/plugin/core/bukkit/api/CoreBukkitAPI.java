@@ -11,11 +11,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-public class CoreBukkitAPI extends CoreAPI {
+public final class CoreBukkitAPI extends CoreAPI {
     private final BukkitAudiences audienceProvider;
     private final HikariDataSource datasource;
 
-    public CoreBukkitAPI() {
+    private CoreBukkitAPI() {
         HamsterCorePlugin plugin = HamsterCorePlugin.getInstance();
         audienceProvider = BukkitAudiences.create(plugin);
 
@@ -40,6 +40,9 @@ public class CoreBukkitAPI extends CoreAPI {
     }
 
     public static void init() {
+        if (instance != null) {
+            return;
+        }
         instance = new CoreBukkitAPI();
     }
 

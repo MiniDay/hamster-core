@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ParentLoreCommand extends ParentCommand {
+public final class ParentLoreCommand extends ParentCommand {
     public static final ParentLoreCommand INSTANCE = new ParentLoreCommand("lore", HamsterCorePlugin.COMMAND_EXECUTOR);
 
     private ParentLoreCommand(@NotNull String name, @Nullable ParentCommand parent) {

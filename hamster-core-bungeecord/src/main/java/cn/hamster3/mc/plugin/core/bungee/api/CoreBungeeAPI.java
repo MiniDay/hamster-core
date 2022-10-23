@@ -11,11 +11,11 @@ import net.md_5.bungee.config.Configuration;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-public class CoreBungeeAPI extends CoreAPI {
+public final class CoreBungeeAPI extends CoreAPI {
     private final BungeeAudiences audienceProvider;
     private final HikariDataSource datasource;
 
-    public CoreBungeeAPI() {
+    private CoreBungeeAPI() {
         HamsterCorePlugin plugin = HamsterCorePlugin.getInstance();
         audienceProvider = BungeeAudiences.create(plugin);
 
@@ -39,6 +39,9 @@ public class CoreBungeeAPI extends CoreAPI {
     }
 
     public static void init() {
+        if (instance != null) {
+            return;
+        }
         instance = new CoreBungeeAPI();
     }
 
