@@ -8,7 +8,7 @@ datasource:
   url: "jdbc:mysql://sql.hamster3.cn:3306/Test1?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false"
   # 如果你不需要做多端跨服，那么请使用 sqlite 作本地数据库
   # driver: "org.sqlite.JDBC"
-  # url: "jdbc:sqlite:./plugin/HamsterCore-BungeeCord/database.db"
+  # url: "jdbc:sqlite:./plugin/HamsterCore-Bukkit/database.db"
   # 用户名
   username: "Test"
   # 密码
