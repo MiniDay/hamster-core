@@ -16,6 +16,10 @@ commands:
     description: 仓鼠核心调试指令
     permission: hamster.core.admin
     permission-message: §c你没有这个权限！
+  lore:
+    description: 仓鼠核心的 lore 修改指令
+    permission: hamster.lore.admin
+    permission-message: §c你没有这个权限！
 
 permissions:
   hamster.core.admin:

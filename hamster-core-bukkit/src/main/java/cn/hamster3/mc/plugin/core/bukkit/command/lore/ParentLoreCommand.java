@@ -5,14 +5,12 @@ import cn.hamster3.mc.plugin.core.bukkit.command.ParentCommand;
 import cn.hamster3.mc.plugin.core.common.util.CommonUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public final class ParentLoreCommand extends ParentCommand {
-    public static final ParentLoreCommand INSTANCE = new ParentLoreCommand("lore", HamsterCorePlugin.COMMAND_EXECUTOR);
+    public static final ParentLoreCommand INSTANCE = new ParentLoreCommand();
 
-    private ParentLoreCommand(@NotNull String name, @Nullable ParentCommand parent) {
-        super(name, parent);
+    public ParentLoreCommand() {
+        super(HamsterCorePlugin.getInstance(), "lore");
         addChildCommand(LoreAddCommand.INSTANCE);
         addChildCommand(LoreRemoveCommand.INSTANCE);
         addChildCommand(LoreSetCommand.INSTANCE);

@@ -1,4 +1,4 @@
-package cn.hamster3.mc.plugin.core.bukkit.command.debug;
+package cn.hamster3.mc.plugin.core.bukkit.command.core;
 
 import cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin;
 import cn.hamster3.mc.plugin.core.bukkit.command.ChildCommand;

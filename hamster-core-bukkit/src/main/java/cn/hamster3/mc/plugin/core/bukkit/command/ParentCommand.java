@@ -3,6 +3,8 @@ package cn.hamster3.mc.plugin.core.bukkit.command;
 import cn.hamster3.mc.plugin.core.bukkit.constant.CoreMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,19 +14,23 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public class ParentCommand extends ChildCommand {
     @NotNull
+    private final Plugin plugin;
+    @NotNull
     private final String name;
     @Nullable
     private final ParentCommand parent;
     @NotNull
     private final List<ChildCommand> childCommands;
 
-    public ParentCommand(@NotNull String name) {
+    public ParentCommand(@NotNull Plugin plugin, @NotNull String name) {
+        this.plugin = plugin;
         this.name = name;
         parent = null;
         childCommands = new ArrayList<>();
     }
 
-    public ParentCommand(@NotNull String name, @Nullable ParentCommand parent) {
+    public ParentCommand(@NotNull Plugin plugin, @NotNull String name, @Nullable ParentCommand parent) {
+        this.plugin = plugin;
         this.name = name;
         this.parent = parent;
         childCommands = new ArrayList<>();
@@ -73,8 +79,10 @@ public class ParentCommand extends ChildCommand {
 
     public void addChildCommand(@NotNull ChildCommand command) {
         childCommands.add(command);
+        plugin.getLogger().info("已为 " + getUsage() + " 添加子命令: " + command.getName() + " .");
     }
 
+    @NotNull
     public Map<String, String> getCommandHelp(CommandSender sender) {
         HashMap<String, String> map = new HashMap<>();
         for (ChildCommand child : childCommands) {
@@ -89,6 +97,12 @@ public class ParentCommand extends ChildCommand {
             map.put(getUsage() + " " + child.getUsage(), child.getDescription());
         }
         return map;
+    }
+
+    public void hook(@NotNull PluginCommand command) {
+        command.setExecutor(this);
+        command.setTabCompleter(this);
+        plugin.getLogger().info("已注册指令 " + getUsage() + ".");
     }
 
     @Override
