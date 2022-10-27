@@ -30,7 +30,7 @@ dependencies {
     <!--添加仓库-->
     <repositories>
         <repository>
-            <id>airgame-repo-maven-public</id>
+            <id>airgame-repo</id>
             <name>AirGame Maven仓库</name>
             <url>https://maven.airgame.net/maven-public</url>
         </repository>
