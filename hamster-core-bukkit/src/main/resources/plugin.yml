@@ -11,7 +11,7 @@ softdepend:
   - PlayerPoints
 
 commands:
-  hamstercore:
+  HamsterCore:
     aliases: [ hcore, core ]
     description: 仓鼠核心调试指令
     permission: hamster.core.admin

@@ -57,8 +57,7 @@ public class HamsterCorePlugin extends JavaPlugin {
         logger.info("已注册 CallbackListener.");
         Bukkit.getPluginManager().registerEvents(DebugListener.INSTANCE, this);
         logger.info("已注册 DebugListener.");
-        //noinspection SpellCheckingInspection
-        ParentCoreCommand.INSTANCE.hook(getCommand("hamstercore"));
+        ParentCoreCommand.INSTANCE.hook(getCommand("HamsterCore"));
         ParentLoreCommand.INSTANCE.hook(getCommand("lore"));
         long time = System.currentTimeMillis() - start;
         logger.info("仓鼠核心启动完成，总计耗时 " + time + " ms.");

@@ -99,6 +99,20 @@ public class ParentCommand extends ChildCommand {
         return map;
     }
 
+    public void sendHelp(@NotNull CommandSender sender) {
+        sender.sendMessage("§e==================== [" + name + "使用帮助] ====================");
+        Map<String, String> helpMap = getCommandHelp(sender);
+        int maxLength = helpMap.keySet().stream()
+                .map(String::length)
+                .max(Integer::compareTo)
+                .orElse(-1);
+        ArrayList<Map.Entry<String, String>> list = new ArrayList<>(helpMap.entrySet());
+        list.sort(Map.Entry.comparingByKey());
+        for (Map.Entry<String, String> entry : list) {
+            sender.sendMessage(String.format("§a%-" + maxLength + "s   - %s", entry.getKey(), entry.getValue()));
+        }
+    }
+
     public void hook(PluginCommand command) {
         if (command == null) {
             return;
@@ -115,17 +129,7 @@ public class ParentCommand extends ChildCommand {
             return true;
         }
         if (args.length == 0) {
-            sender.sendMessage("§e==================== [" + name + "使用帮助] ====================");
-            Map<String, String> helpMap = getCommandHelp(sender);
-            int maxLength = helpMap.keySet().stream()
-                    .map(String::length)
-                    .max(Integer::compareTo)
-                    .orElse(-1);
-            ArrayList<Map.Entry<String, String>> list = new ArrayList<>(helpMap.entrySet());
-            list.sort(Map.Entry.comparingByKey());
-            for (Map.Entry<String, String> entry : list) {
-                sender.sendMessage(String.format("§a%-" + maxLength + "s   - %s", entry.getKey(), entry.getValue()));
-            }
+            sendHelp(sender);
             return true;
         }
         for (ChildCommand childCommand : childCommands) {
