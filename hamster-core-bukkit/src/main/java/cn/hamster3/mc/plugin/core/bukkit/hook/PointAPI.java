@@ -128,7 +128,7 @@ public class PointAPI {
      * @param player 玩家
      * @return 玩家的点券数量
      */
-    public static int seePoint(final OfflinePlayer player) {
+    public static int getPoint(final OfflinePlayer player) {
         if (playerPointsAPI != null) {
             return playerPointsAPI.look(player.getUniqueId());
         }
@@ -141,7 +141,7 @@ public class PointAPI {
      * @param uuid 玩家的uuid
      * @return 玩家的点券数量
      */
-    public static int seePoint(final UUID uuid) {
+    public static int getPoint(final UUID uuid) {
         if (playerPointsAPI != null) {
             return playerPointsAPI.look(uuid);
         }
