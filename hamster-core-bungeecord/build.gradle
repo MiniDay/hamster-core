@@ -3,7 +3,7 @@ setArchivesBaseName("HamsterCore-BungeeCord")
 evaluationDependsOn(':hamster-core-common')
 
 dependencies {
-    apiShade(project(":hamster-core-common")) { transitive = false }
+    apiShade(project(":hamster-core-common")) { exclude group: "*" }
 
     compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
     // https://mvnrepository.com/artifact/net.kyori/adventure-platform-bungeecord
