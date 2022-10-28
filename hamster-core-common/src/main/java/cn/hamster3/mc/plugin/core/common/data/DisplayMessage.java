@@ -81,17 +81,48 @@ public class DisplayMessage {
 
     public void show(@NotNull Audience audience, @NotNull TextReplacementConfig replacement) {
         if (message != null) {
-            audience.sendMessage(message.compact().replaceText(replacement));
+            audience.sendMessage(message.replaceText(replacement).compact());
         }
         if (actionbar != null) {
-            audience.sendActionBar(actionbar.replaceText(replacement));
+            audience.sendActionBar(actionbar.replaceText(replacement).compact());
         }
         if (title != null) {
             audience.showTitle(Title.title(
-                    title.title().replaceText(replacement),
-                    title.subtitle().replaceText(replacement),
+                    title.title().replaceText(replacement).compact(),
+                    title.subtitle().replaceText(replacement).compact(),
                     title.times()
             ));
+        }
+        if (sound != null) {
+            audience.playSound(sound);
+        }
+    }
+
+    public void show(@NotNull Audience audience, @NotNull TextReplacementConfig... replacements) {
+        if (message != null) {
+            Component replacedMessage = message;
+            for (TextReplacementConfig replacement : replacements) {
+                replacedMessage = replacedMessage.replaceText(replacement);
+            }
+            audience.sendMessage(replacedMessage.compact());
+        }
+        if (actionbar != null) {
+            Component replacedActionBar = actionbar;
+            for (TextReplacementConfig replacement : replacements) {
+                replacedActionBar = replacedActionBar.replaceText(replacement);
+            }
+            audience.sendActionBar(replacedActionBar.compact());
+        }
+        if (title != null) {
+            Title replacedTitle = title;
+            for (TextReplacementConfig replacement : replacements) {
+                replacedTitle = Title.title(
+                        title.title().replaceText(replacement).compact(),
+                        title.subtitle().replaceText(replacement).compact(),
+                        title.times()
+                );
+            }
+            audience.showTitle(replacedTitle);
         }
         if (sound != null) {
             audience.playSound(sound);
@@ -101,10 +132,10 @@ public class DisplayMessage {
     public JsonObject saveToJson() {
         JsonObject object = new JsonObject();
         if (message != null) {
-            object.add("message", GsonComponentSerializer.gson().serializeToTree(message.compact()));
+            object.add("message", GsonComponentSerializer.gson().serializeToTree(message));
         }
         if (actionbar != null) {
-            object.add("actionbar", GsonComponentSerializer.gson().serializeToTree(actionbar.compact()));
+            object.add("actionbar", GsonComponentSerializer.gson().serializeToTree(actionbar));
         }
         if (title != null) {
             object.add("title", SerializeUtils.serializeTitle(title));
@@ -123,7 +154,7 @@ public class DisplayMessage {
 
     @NotNull
     public DisplayMessage setMessage(@NotNull Component message) {
-        this.message = message;
+        this.message = message.compact();
         return this;
     }
 
@@ -135,7 +166,7 @@ public class DisplayMessage {
 
     @NotNull
     public DisplayMessage setActionBar(@NotNull Component message) {
-        this.actionbar = message;
+        this.actionbar = message.compact();
         return this;
     }
 
@@ -161,15 +192,15 @@ public class DisplayMessage {
 
     @NotNull
     public DisplayMessage setTitle(@NotNull Component title, @NotNull Component subtitle) {
-        this.title = Title.title(title, subtitle);
+        this.title = Title.title(title.compact(), subtitle.compact());
         return this;
     }
 
     @NotNull
     public DisplayMessage setTitle(@NotNull Component title, @NotNull Component subtitle, int fadeIn, int stay, int fadeOut) {
         this.title = Title.title(
-                title,
-                subtitle,
+                title.compact(),
+                subtitle.compact(),
                 Title.Times.times(
                         Ticks.duration(fadeIn),
                         Ticks.duration(stay),
@@ -235,10 +266,10 @@ public class DisplayMessage {
         }
         JsonObject object = element.getAsJsonObject();
         if (object.has("message")) {
-            message = GsonComponentSerializer.gson().deserializeFromTree(object.get("message"));
+            message = GsonComponentSerializer.gson().deserializeFromTree(object.get("message")).compact();
         }
         if (object.has("actionbar")) {
-            actionbar = GsonComponentSerializer.gson().deserializeFromTree(object.get("actionbar"));
+            actionbar = GsonComponentSerializer.gson().deserializeFromTree(object.get("actionbar")).compact();
         }
         if (object.has("title")) {
             title = SerializeUtils.deserializeTitle(object.getAsJsonObject("title"));

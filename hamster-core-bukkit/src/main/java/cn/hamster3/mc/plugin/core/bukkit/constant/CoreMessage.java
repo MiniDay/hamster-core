@@ -59,12 +59,21 @@ public enum CoreMessage {
     }
 
     @SuppressWarnings("unused")
-    public void show(CommandSender sender, TextReplacementConfig config) {
+    public void show(CommandSender sender, TextReplacementConfig replacement) {
         if (message == null) {
             sender.sendMessage(name());
         }
         Audience audience = CoreBukkitAPI.getInstance().getAudienceProvider().sender(sender);
-        message.show(audience, config);
+        message.show(audience, replacement);
+    }
+
+    @SuppressWarnings("unused")
+    public void show(CommandSender sender, TextReplacementConfig... replacement) {
+        if (message == null) {
+            sender.sendMessage(name());
+        }
+        Audience audience = CoreBukkitAPI.getInstance().getAudienceProvider().sender(sender);
+        message.show(audience, replacement);
     }
 
     @SuppressWarnings("unused")
