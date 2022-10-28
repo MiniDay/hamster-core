@@ -80,55 +80,54 @@ public class DisplayMessage {
     }
 
     public void show(@NotNull Audience audience, @NotNull TextReplacementConfig replacement) {
-        if (message != null) {
-            audience.sendMessage(message.replaceText(replacement).compact());
-        }
-        if (actionbar != null) {
-            audience.sendActionBar(actionbar.replaceText(replacement).compact());
-        }
-        if (title != null) {
-            audience.showTitle(Title.title(
-                    title.title().replaceText(replacement).compact(),
-                    title.subtitle().replaceText(replacement).compact(),
-                    title.times()
-            ));
-        }
-        if (sound != null) {
-            audience.playSound(sound);
-        }
+        copy().replace(replacement).show(audience);
     }
 
     public void show(@NotNull Audience audience, @NotNull TextReplacementConfig... replacements) {
+        copy().replace(replacements).show(audience);
+    }
+
+    public DisplayMessage replace(@NotNull TextReplacementConfig replacement) {
         if (message != null) {
-            Component replacedMessage = message;
-            for (TextReplacementConfig replacement : replacements) {
-                replacedMessage = replacedMessage.replaceText(replacement);
-            }
-            audience.sendMessage(replacedMessage.compact());
+            message = message.replaceText(replacement).compact();
         }
         if (actionbar != null) {
-            Component replacedActionBar = actionbar;
-            for (TextReplacementConfig replacement : replacements) {
-                replacedActionBar = replacedActionBar.replaceText(replacement);
-            }
-            audience.sendActionBar(replacedActionBar.compact());
+            actionbar = actionbar.replaceText(replacement).compact();
         }
         if (title != null) {
-            Title replacedTitle = title;
+            title = Title.title(
+                    title.title().replaceText(replacement).compact(),
+                    title.subtitle().replaceText(replacement).compact(),
+                    title.times()
+            );
+        }
+        return this;
+    }
+
+    public DisplayMessage replace(@NotNull TextReplacementConfig... replacements) {
+        if (message != null) {
             for (TextReplacementConfig replacement : replacements) {
-                replacedTitle = Title.title(
+                message = message.replaceText(replacement).compact();
+            }
+        }
+        if (actionbar != null) {
+            for (TextReplacementConfig replacement : replacements) {
+                actionbar = actionbar.replaceText(replacement).compact();
+            }
+        }
+        if (title != null) {
+            for (TextReplacementConfig replacement : replacements) {
+                title = Title.title(
                         title.title().replaceText(replacement).compact(),
                         title.subtitle().replaceText(replacement).compact(),
                         title.times()
                 );
             }
-            audience.showTitle(replacedTitle);
         }
-        if (sound != null) {
-            audience.playSound(sound);
-        }
+        return this;
     }
 
+    @NotNull
     public JsonObject saveToJson() {
         JsonObject object = new JsonObject();
         if (message != null) {
@@ -258,7 +257,6 @@ public class DisplayMessage {
     }
 
     @NotNull
-    @SuppressWarnings("UnusedReturnValue")
     public DisplayMessage fromJson(@NotNull JsonElement element) {
         if (!element.isJsonObject()) {
             message = Component.text(element.toString());
@@ -278,6 +276,15 @@ public class DisplayMessage {
             sound = SerializeUtils.deserializeSound(object.getAsJsonObject("sound"));
         }
         return this;
+    }
+
+    @NotNull
+    public DisplayMessage copy() {
+        return new DisplayMessage()
+                .setMessage(message)
+                .setActionBar(actionbar)
+                .setTitle(title)
+                .setSound(sound);
     }
 
     @Override
