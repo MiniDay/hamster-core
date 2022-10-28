@@ -40,7 +40,7 @@ public enum CoreMessage {
             plugin.getLogger().warning("加载消息失败: 配置文件中未找到 messages 节点！");
             return;
         }
-        for (CoreMessage value : CoreMessage.values()) {
+        for (CoreMessage value : values()) {
             try {
                 value.message = BukkitUtils.getDisplayMessage(config.getConfigurationSection(value.name()));
             } catch (Exception e) {
