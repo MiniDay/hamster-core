@@ -61,7 +61,7 @@ subprojects {
     publishing {
         publications {
             mavenJava(MavenPublication) {
-                var projectNameSplit = project.name.split('-')
+                def projectNameSplit = project.name.split('-')
                 artifactId = projectNameSplit[projectNameSplit.length - 1]
                 artifact jar
                 artifact sourcesJar
