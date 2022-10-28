@@ -11,21 +11,22 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.UUID;
 
-@SuppressWarnings("SpellCheckingInspection")
-public class BlockInfoCommand extends ChildCommand {
-    public static final BlockInfoCommand INSTANCE = new BlockInfoCommand();
+public class InfoModeCommand extends ChildCommand {
+    public static final InfoModeCommand INSTANCE = new InfoModeCommand();
 
-    private BlockInfoCommand() {
+    private InfoModeCommand() {
     }
 
     @Override
+    @SuppressWarnings("SpellCheckingInspection")
     public @NotNull String getName() {
-        return "blockinfo";
+        return "infomode";
     }
 
     @Override
+    @SuppressWarnings("SpellCheckingInspection")
     public @NotNull String getUsage() {
-        return "blockinfo [on/off]";
+        return "infomode [on/off]";
     }
 
     @Override
@@ -35,7 +36,7 @@ public class BlockInfoCommand extends ChildCommand {
 
     @Override
     public @NotNull String getDescription() {
-        return "开启方块信息查询模式";
+        return "开启信息查询模式";
     }
 
     @Override
@@ -50,25 +51,25 @@ public class BlockInfoCommand extends ChildCommand {
             switch (args[0]) {
                 case "1":
                 case "on": {
-                    DebugListener.BLOCK_INFO.add(uuid);
-                    CoreMessage.COMMAND_DEBUG_BLOCK_INFO_ON.show(player);
+                    DebugListener.INFO_MODE_PLAYERS.add(uuid);
+                    CoreMessage.COMMAND_DEBUG_INFO_MODE_ON.show(player);
                     return true;
                 }
                 case "0":
                 case "off": {
-                    DebugListener.BLOCK_INFO.remove(uuid);
-                    CoreMessage.COMMAND_DEBUG_BLOCK_INFO_OFF.show(player);
+                    DebugListener.INFO_MODE_PLAYERS.remove(uuid);
+                    CoreMessage.COMMAND_DEBUG_INFO_MODE_OFF.show(player);
                     return true;
                 }
             }
         }
 
-        if (DebugListener.BLOCK_INFO.contains(uuid)) {
-            DebugListener.BLOCK_INFO.remove(uuid);
-            CoreMessage.COMMAND_DEBUG_BLOCK_INFO_OFF.show(player);
+        if (DebugListener.INFO_MODE_PLAYERS.contains(uuid)) {
+            DebugListener.INFO_MODE_PLAYERS.remove(uuid);
+            CoreMessage.COMMAND_DEBUG_INFO_MODE_OFF.show(player);
         } else {
-            DebugListener.BLOCK_INFO.add(uuid);
-            CoreMessage.COMMAND_DEBUG_BLOCK_INFO_ON.show(player);
+            DebugListener.INFO_MODE_PLAYERS.add(uuid);
+            CoreMessage.COMMAND_DEBUG_INFO_MODE_ON.show(player);
         }
         return true;
     }

@@ -8,8 +8,8 @@ public class ParentCoreCommand extends ParentCommand {
 
     private ParentCoreCommand() {
         super(HamsterCorePlugin.getInstance(), "core");
-        addChildCommand(YamlCommand.INSTANCE);
         addChildCommand(GCCommand.INSTANCE);
-        addChildCommand(BlockInfoCommand.INSTANCE);
+        addChildCommand(YamlCommand.INSTANCE);
+        addChildCommand(InfoModeCommand.INSTANCE);
     }
 }
