@@ -8,14 +8,14 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("unused")
 public abstract class CountdownThread implements Runnable {
     private final long interval;
-    private final long ticks;
-    protected int tick;
+    private final long totalTicks;
+    private int nowTicks;
     private ScheduledFuture<?> future;
 
-    public CountdownThread(long interval, long ticks) {
+    public CountdownThread(long interval, long totalTicks) {
         this.interval = interval;
-        this.ticks = ticks;
-        tick = 0;
+        this.totalTicks = totalTicks;
+        nowTicks = 0;
     }
 
     public void start() {
@@ -28,7 +28,7 @@ public abstract class CountdownThread implements Runnable {
 
     @Override
     public void run() {
-        if (tick == ticks) {
+        if (nowTicks == totalTicks) {
             try {
                 onFinish();
             } catch (Exception e) {
@@ -38,11 +38,11 @@ public abstract class CountdownThread implements Runnable {
             return;
         }
         try {
-            onTick(tick);
+            onTick(nowTicks);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tick++;
+        nowTicks++;
     }
 
     /**
@@ -50,12 +50,35 @@ public abstract class CountdownThread implements Runnable {
      *
      * @param tick 时间刻度，以 0 开始，到 interval-1 结束
      */
-    protected void onTick(int tick) {
-    }
+    protected abstract void onTick(int tick);
+
+    protected abstract void onFinish();
 
     public void cancel() {
         future.cancel(false);
     }
 
-    protected abstract void onFinish();
+    public long getInterval() {
+        return interval;
+    }
+
+    public long getTotalTicks() {
+        return totalTicks;
+    }
+
+    public int getNowTicks() {
+        return nowTicks;
+    }
+
+    public void setNowTicks(int nowTicks) {
+        this.nowTicks = nowTicks;
+    }
+
+    public ScheduledFuture<?> getFuture() {
+        return future;
+    }
+
+    public void setFuture(ScheduledFuture<?> future) {
+        this.future = future;
+    }
 }

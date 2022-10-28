@@ -5,6 +5,7 @@ import cn.hamster3.mc.plugin.core.bukkit.command.ParentCommand;
 import cn.hamster3.mc.plugin.core.common.util.CommonUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public final class ParentLoreCommand extends ParentCommand {
     public static final ParentLoreCommand INSTANCE = new ParentLoreCommand();
@@ -19,7 +20,7 @@ public final class ParentLoreCommand extends ParentCommand {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         CommonUtils.replaceColorCode(args);
         return super.onCommand(sender, command, label, args);
     }

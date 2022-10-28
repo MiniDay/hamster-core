@@ -27,10 +27,10 @@ public abstract class CoreAPI {
     }
 
     public void reportError(@NotNull String apiKey, @NotNull String projectID, @NotNull Throwable exception) {
-
+        // todo
     }
 
     public void reportFile(@NotNull String apiKey, @NotNull String projectID, @NotNull String filename, byte @NotNull [] bytes) {
-
+        // todo
     }
 }

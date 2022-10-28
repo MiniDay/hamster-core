@@ -99,14 +99,21 @@ public class ParentCommand extends ChildCommand {
         return map;
     }
 
-    public void hook(@NotNull PluginCommand command) {
+    public void hook(PluginCommand command) {
+        if (command == null) {
+            return;
+        }
         command.setExecutor(this);
         command.setTabCompleter(this);
         plugin.getLogger().info("已注册指令 " + getUsage() + ".");
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if (!hasPermission(sender)) {
+            CoreMessage.COMMAND_NOT_HAS_PERMISSION.show(sender);
+            return true;
+        }
         if (args.length == 0) {
             sender.sendMessage("§e==================== [" + name + "使用帮助] ====================");
             Map<String, String> helpMap = getCommandHelp(sender);
@@ -122,16 +129,21 @@ public class ParentCommand extends ChildCommand {
             return true;
         }
         for (ChildCommand childCommand : childCommands) {
-            if (childCommand.getName().equalsIgnoreCase(args[0])) {
+            if (!childCommand.getName().equalsIgnoreCase(args[0])) {
+                continue;
+            }
+            if (childCommand instanceof ParentCommand || childCommand.hasPermission(sender)) {
                 return childCommand.onCommand(sender, command, label, Arrays.copyOfRange(args, 1, args.length));
             }
+            CoreMessage.COMMAND_NOT_HAS_PERMISSION.show(sender);
+            return true;
         }
         CoreMessage.COMMAND_NOT_FOUND.show(sender);
         return true;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length == 0) {
             return childCommands.stream()
                     .map(ChildCommand::getName)

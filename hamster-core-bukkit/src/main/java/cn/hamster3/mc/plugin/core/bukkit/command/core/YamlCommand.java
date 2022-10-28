@@ -39,7 +39,7 @@ public class YamlCommand extends ChildCommand {
 
     @Override
     public boolean hasPermission(@NotNull CommandSender sender) {
-        return true;
+        return sender.hasPermission("hamster.core.admin");
     }
 
     @Override
@@ -47,9 +47,9 @@ public class YamlCommand extends ChildCommand {
         return "将当前信息保存至 yaml 中";
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "ConstantConditions"})
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         YamlConfiguration config = new YamlConfiguration();
         config.set("mc-version", BukkitUtils.getMCVersion());
         config.set("nms-version", BukkitUtils.getNMSVersion());
@@ -70,10 +70,10 @@ public class YamlCommand extends ChildCommand {
         lore.add("§e测试 lore 1");
         lore.add("§e测试 lore 2");
         lore.add("§e测试 lore 3");
-        meta.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
         meta.setDisplayName("§a测试物品");
         meta.setLore(lore);
         meta.addItemFlags(ItemFlag.values());
+        meta.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
         stack.setItemMeta(meta);
         config.set("test-item", stack);
         File dataFolder = new File(HamsterCorePlugin.getInstance().getDataFolder(), "yaml");
@@ -91,7 +91,7 @@ public class YamlCommand extends ChildCommand {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         return Collections.emptyList();
     }
 }

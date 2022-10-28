@@ -9,8 +9,11 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class ButtonGroup {
+    @NotNull
     private final String name;
+    @NotNull
     private final PageConfig config;
+    @NotNull
     private final HashMap<Character, String> buttonNameMap;
 
     /**
@@ -19,7 +22,7 @@ public class ButtonGroup {
      * @param pageConfig Page 设定
      * @param config     按钮组设定
      */
-    public ButtonGroup(PageConfig pageConfig, ConfigurationSection config) {
+    public ButtonGroup(@NotNull PageConfig pageConfig, @NotNull ConfigurationSection config) {
         this.config = pageConfig;
         name = config.getName();
         buttonNameMap = new HashMap<>();
@@ -148,6 +151,7 @@ public class ButtonGroup {
      *
      * @return 按钮组名称
      */
+    @NotNull
     public String getName() {
         return name;
     }
@@ -157,6 +161,7 @@ public class ButtonGroup {
      *
      * @return 把图形字符映射到按钮名称的表
      */
+    @NotNull
     public HashMap<Character, String> getButtonNameMap() {
         return buttonNameMap;
     }

@@ -1,10 +1,10 @@
 package cn.hamster3.mc.plugin.core.bukkit.constant;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public enum CoreMessage {
     COMMAND_NOT_FOUND,
+    COMMAND_NOT_HAS_PERMISSION,
     COMMAND_MUST_USED_BY_PLAYER,
 
     COMMAND_DEBUG_INFO_MODE_ON,
@@ -28,9 +28,5 @@ public enum CoreMessage {
 
     public void show(CommandSender sender) {
         sender.sendMessage(name());
-    }
-
-    public void show(Player player) {
-        player.sendMessage(name());
     }
 }

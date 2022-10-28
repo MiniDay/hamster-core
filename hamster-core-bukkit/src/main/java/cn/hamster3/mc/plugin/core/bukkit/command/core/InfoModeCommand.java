@@ -40,7 +40,7 @@ public class InfoModeCommand extends ChildCommand {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
             CoreMessage.COMMAND_MUST_USED_BY_PLAYER.show(sender);
             return true;
@@ -75,7 +75,7 @@ public class InfoModeCommand extends ChildCommand {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         return null;
     }
 }

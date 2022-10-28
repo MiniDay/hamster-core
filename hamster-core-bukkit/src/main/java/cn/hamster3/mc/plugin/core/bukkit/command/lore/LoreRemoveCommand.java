@@ -41,7 +41,7 @@ public class LoreRemoveCommand extends ChildCommand {
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length < 1) {
             CoreMessage.COMMAND_LORE_REMOVE_NOT_INPUT_NUMBER.show(sender);
             return true;
@@ -80,7 +80,7 @@ public class LoreRemoveCommand extends ChildCommand {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         return null;
     }
 }

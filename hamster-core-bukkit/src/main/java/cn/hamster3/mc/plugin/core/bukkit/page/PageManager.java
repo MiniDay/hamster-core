@@ -7,6 +7,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
@@ -23,11 +24,14 @@ public class PageManager {
             throw new IllegalArgumentException(clazz.getName() + " 未被 @PluginPage 注解修饰！");
         }
         PluginPage annotation = clazz.getAnnotation(PluginPage.class);
-        String value = annotation.value();
-        Plugin plugin = Bukkit.getPluginManager().getPlugin(value);
+        String pluginName = annotation.value();
+        Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
+        if (plugin == null) {
+            throw new IllegalArgumentException("未找到插件 " + pluginName + " !");
+        }
         File pageFolder = new File(plugin.getDataFolder(), "pages");
         if (pageFolder.mkdirs()) {
-            HamsterCorePlugin.getInstance().getLogger().info("为 " + value + " 创建页面配置文件夹...");
+            HamsterCorePlugin.getInstance().getLogger().info("为 " + pluginName + " 创建页面配置文件夹...");
         }
         String pageFileName = clazz.getSimpleName() + ".yml";
         File pageFile = new File(pageFolder, pageFileName);
@@ -37,8 +41,13 @@ public class PageManager {
             PAGE_CONFIG.put(clazz.getName(), pageConfig);
             return pageConfig;
         }
+        InputStream resource = plugin.getResource("/" + pageFileName);
+        if (resource == null) {
+            throw new IllegalArgumentException("在插件 " + pluginName + " 的文件内部未找到 " + pageFileName + " !");
+        }
         try {
-            Files.copy(plugin.getResource("/" + pageFileName), pageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(resource, pageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            resource.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

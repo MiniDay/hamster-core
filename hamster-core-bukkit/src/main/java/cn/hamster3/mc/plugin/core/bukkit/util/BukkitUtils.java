@@ -82,6 +82,7 @@ public final class BukkitUtils {
         try {
             stack = new ItemStack(Material.valueOf("PLAYER_HEAD"));
         } catch (IllegalArgumentException e) {
+            //noinspection deprecation
             stack = new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (short) 3);
         }
         SkullMeta meta = (SkullMeta) stack.getItemMeta();
@@ -110,8 +111,10 @@ public final class BukkitUtils {
             stack = new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (short) 3);
         }
         SkullMeta meta = (SkullMeta) stack.getItemMeta();
-        meta.setOwner(name);
-        stack.setItemMeta(meta);
+        if (meta != null) {
+            meta.setOwner(name);
+            stack.setItemMeta(meta);
+        }
         return stack;
     }
 
@@ -161,7 +164,7 @@ public final class BukkitUtils {
         }
         if (stack.hasItemMeta()) {
             ItemMeta meta = stack.getItemMeta();
-            if (meta.hasDisplayName()) {
+            if (meta != null && meta.hasDisplayName()) {
                 return meta.getDisplayName();
             }
         }

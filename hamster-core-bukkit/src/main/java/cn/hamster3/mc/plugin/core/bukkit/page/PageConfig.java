@@ -60,16 +60,20 @@ public class PageConfig implements InventoryHolder {
 
         buttons = new HashMap<>();
         ConfigurationSection buttonsConfig = config.getConfigurationSection("buttons");
-        for (String key : buttonsConfig.getKeys(false)) {
-            buttons.put(key, buttonsConfig.getItemStack(key));
+        if (buttonsConfig != null) {
+            for (String key : buttonsConfig.getKeys(false)) {
+                buttons.put(key, buttonsConfig.getItemStack(key));
+            }
         }
 
         buttonGroups = new ArrayList<>();
         ConfigurationSection buttonGroupsConfig = config.getConfigurationSection("groups");
-        for (String key : buttonGroupsConfig.getKeys(false)) {
-            buttonGroups.add(
-                    new ButtonGroup(this, buttonGroupsConfig.getConfigurationSection(key))
-            );
+        if (buttonGroupsConfig != null) {
+            for (String key : buttonGroupsConfig.getKeys(false)) {
+                //noinspection ConstantConditions
+                ButtonGroup buttonGroup = new ButtonGroup(this, buttonGroupsConfig.getConfigurationSection(key));
+                buttonGroups.add(buttonGroup);
+            }
         }
 
         ButtonGroup group = getButtonGroup("default");
@@ -84,12 +88,14 @@ public class PageConfig implements InventoryHolder {
 
         buttonSounds = new HashMap<>();
         ConfigurationSection buttonSoundConfig = config.getConfigurationSection("sounds");
-        for (String key : buttonSoundConfig.getKeys(false)) {
-            try {
-                buttonSounds.put(key, Sound.valueOf(buttonSoundConfig.getString(key)));
-            } catch (IllegalArgumentException e) {
-                HamsterCorePlugin.getInstance().getLogger().warning("初始化 PageConfig 时遇到了一个异常:");
-                e.printStackTrace();
+        if (buttonSoundConfig != null) {
+            for (String key : buttonSoundConfig.getKeys(false)) {
+                try {
+                    buttonSounds.put(key, Sound.valueOf(buttonSoundConfig.getString(key)));
+                } catch (Exception e) {
+                    HamsterCorePlugin.getInstance().getLogger().warning("初始化 PageConfig 时遇到了一个异常:");
+                    e.printStackTrace();
+                }
             }
         }
     }

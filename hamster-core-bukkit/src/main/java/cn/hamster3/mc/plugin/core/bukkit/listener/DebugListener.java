@@ -44,6 +44,9 @@ public class DebugListener implements Listener {
         }
         event.setCancelled(true);
         Block block = event.getClickedBlock();
+        if (block == null) {
+            return;
+        }
         player.sendMessage("§e==============================");
         player.sendMessage(String.format("§a方块位置: %s %d %d %d",
                 block.getWorld().getName(),

@@ -20,6 +20,9 @@ public final class CoreBukkitAPI extends CoreAPI {
         FileConfiguration config = plugin.getConfig();
 
         ConfigurationSection datasourceConfig = config.getConfigurationSection("datasource");
+        if (datasourceConfig == null) {
+            throw new IllegalArgumentException("配置文件中未找到 datasource 节点！");
+        }
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(datasourceConfig.getString("driver"));
         hikariConfig.setJdbcUrl(datasourceConfig.getString("url"));
