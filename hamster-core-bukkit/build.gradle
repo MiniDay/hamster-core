@@ -3,7 +3,7 @@ setArchivesBaseName("HamsterCore-Bukkit")
 evaluationDependsOn(':hamster-core-common')
 
 dependencies {
-    apiShade(project(":hamster-core-common")) { exclude group: "*" }
+    apiShade(project(":hamster-core-common")) { transitive = false }
 
     compileOnly 'org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT'
     // https://mvnrepository.com/artifact/net.kyori/adventure-platform-bukkit
