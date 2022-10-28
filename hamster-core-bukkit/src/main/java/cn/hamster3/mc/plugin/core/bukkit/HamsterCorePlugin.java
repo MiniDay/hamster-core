@@ -39,7 +39,7 @@ public class HamsterCorePlugin extends JavaPlugin {
         reloadConfig();
         logger.info("已读取配置文件.");
         CoreBukkitAPI.init();
-        logger.info("CoreBukkitAPI 已初始化.");
+        logger.info("已初始化 CoreBukkitAPI.");
         CoreMessage.init(this);
         logger.info("已初始化语言文本.");
         long time = System.currentTimeMillis() - start;
@@ -52,11 +52,11 @@ public class HamsterCorePlugin extends JavaPlugin {
         long start = System.currentTimeMillis();
         logger.info("仓鼠核心正在启动...");
         VaultAPI.reloadVaultHook();
-        logger.info("完成 VaultAPI 挂载.");
+        logger.info("已完成 VaultAPI 挂载.");
         PointAPI.reloadPlayerPointAPIHook();
-        logger.info("完成 PlayerPoints 挂载.");
+        logger.info("已完成 PlayerPoints 挂载.");
         audienceProvider = BukkitAudiences.create(this);
-        logger.info("完成 BukkitAudiences 挂载.");
+        logger.info("已完成 BukkitAudiences 挂载.");
         Bukkit.getPluginManager().registerEvents(PageListener.INSTANCE, this);
         logger.info("已注册 PageListener.");
         Bukkit.getPluginManager().registerEvents(CallbackListener.INSTANCE, this);
