@@ -1,6 +1,6 @@
 package cn.hamster3.mc.plugin.core.common.constant;
 
-import cn.hamster3.mc.plugin.core.common.data.Message;
+import cn.hamster3.mc.plugin.core.common.data.DisplayMessage;
 import com.google.gson.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,14 +19,14 @@ public interface CoreConstantObjects {
      * GSON 工具
      */
     Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(Message.class, MessageTypeAdapter.INSTANCE)
+            .registerTypeAdapter(DisplayMessage.class, MessageTypeAdapter.INSTANCE)
             .create();
 
     /**
      * GSON 工具，会使用格式化输出、且解析中包含null参数
      */
     Gson GSON_HUMAN = new GsonBuilder()
-            .registerTypeAdapter(Message.class, MessageTypeAdapter.INSTANCE)
+            .registerTypeAdapter(DisplayMessage.class, MessageTypeAdapter.INSTANCE)
             .serializeNulls()
             .setPrettyPrinting()
             .create();
@@ -60,19 +60,19 @@ public interface CoreConstantObjects {
         }
     }
 
-    class MessageTypeAdapter implements JsonSerializer<Message>, JsonDeserializer<Message> {
+    class MessageTypeAdapter implements JsonSerializer<DisplayMessage>, JsonDeserializer<DisplayMessage> {
         public static final MessageTypeAdapter INSTANCE = new MessageTypeAdapter();
 
         private MessageTypeAdapter() {
         }
 
         @Override
-        public Message deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return new Message().json(json);
+        public DisplayMessage deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return new DisplayMessage().fromJson(json);
         }
 
         @Override
-        public JsonElement serialize(Message src, Type typeOfSrc, JsonSerializationContext context) {
+        public JsonElement serialize(DisplayMessage src, Type typeOfSrc, JsonSerializationContext context) {
             return src.saveToJson();
         }
     }

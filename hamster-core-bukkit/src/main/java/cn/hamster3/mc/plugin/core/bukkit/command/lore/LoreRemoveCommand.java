@@ -52,7 +52,7 @@ public class LoreRemoveCommand extends ChildCommand {
         }
         int i = Integer.parseInt(args[0]);
         if (i <= 0) {
-            CoreMessage.COMMAND_LORE_REMOVE_NOT_INPUT_NUMBER_ERROR.show(sender);
+            CoreMessage.COMMAND_LORE_REMOVE_INPUT_NUMBER_ERROR.show(sender);
             return true;
         }
         Player player = (Player) sender;

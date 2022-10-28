@@ -57,7 +57,7 @@ public class LoreSetCommand extends ChildCommand {
         }
         int i = Integer.parseInt(args[0]);
         if (i <= 0) {
-            CoreMessage.COMMAND_LORE_SET_NOT_INPUT_NUMBER_ERROR.show(sender);
+            CoreMessage.COMMAND_LORE_SET_INPUT_NUMBER_ERROR.show(sender);
             return true;
         }
         Player player = (Player) sender;

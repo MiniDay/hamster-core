@@ -1,9 +1,11 @@
 package cn.hamster3.mc.plugin.core.bukkit.util;
 
+import cn.hamster3.mc.plugin.core.common.data.DisplayMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -169,5 +171,39 @@ public final class BukkitUtils {
             }
         }
         return stack.getType().name();
+    }
+
+    public static DisplayMessage getDisplayMessage(ConfigurationSection config) {
+        if (config == null) {
+            return null;
+        }
+        DisplayMessage displayMessage = new DisplayMessage();
+        String message = config.getString("message");
+        if (message != null) {
+            displayMessage.setMessage(message);
+        }
+        String actionbar = config.getString("actionbar");
+        if (actionbar != null) {
+            displayMessage.setActionBar(actionbar);
+        }
+        String title = config.getString("title");
+        String subtitle = config.getString("subtitle");
+        if (title != null || subtitle != null) {
+            displayMessage.setTitle(
+                    title == null ? "" : title,
+                    subtitle == null ? "" : subtitle,
+                    config.getInt("fade-in", 10),
+                    config.getInt("stay", 70),
+                    config.getInt("fade-out", 20)
+            );
+        }
+        String sound = config.getString("sound");
+        if (sound != null) {
+            displayMessage.setSound(sound,
+                    (float) config.getDouble("volume", 1f),
+                    (float) config.getDouble("pitch", 1f)
+            );
+        }
+        return displayMessage;
     }
 }

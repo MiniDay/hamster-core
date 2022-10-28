@@ -3,6 +3,7 @@ package cn.hamster3.mc.plugin.core.bukkit;
 import cn.hamster3.mc.plugin.core.bukkit.api.CoreBukkitAPI;
 import cn.hamster3.mc.plugin.core.bukkit.command.core.ParentCoreCommand;
 import cn.hamster3.mc.plugin.core.bukkit.command.lore.ParentLoreCommand;
+import cn.hamster3.mc.plugin.core.bukkit.constant.CoreMessage;
 import cn.hamster3.mc.plugin.core.bukkit.hook.PointAPI;
 import cn.hamster3.mc.plugin.core.bukkit.hook.VaultAPI;
 import cn.hamster3.mc.plugin.core.bukkit.listener.CallbackListener;
@@ -34,8 +35,13 @@ public class HamsterCorePlugin extends JavaPlugin {
         Logger logger = getLogger();
         long start = System.currentTimeMillis();
         logger.info("仓鼠核心正在初始化...");
+        saveDefaultConfig();
+        reloadConfig();
+        logger.info("已读取配置文件.");
         CoreBukkitAPI.init();
         logger.info("CoreBukkitAPI 已初始化.");
+        CoreMessage.init(this);
+        logger.info("已初始化语言文本.");
         long time = System.currentTimeMillis() - start;
         logger.info("仓鼠核心初始化完成，总计耗时 " + time + " ms.");
     }

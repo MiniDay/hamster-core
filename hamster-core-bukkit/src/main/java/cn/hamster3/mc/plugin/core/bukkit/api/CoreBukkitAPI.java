@@ -4,7 +4,7 @@ import cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin;
 import cn.hamster3.mc.plugin.core.common.api.CoreAPI;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import net.kyori.adventure.platform.AudienceProvider;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -14,10 +14,7 @@ public final class CoreBukkitAPI extends CoreAPI {
     private final HikariDataSource datasource;
 
     private CoreBukkitAPI() {
-        HamsterCorePlugin plugin = HamsterCorePlugin.getInstance();
-
-        plugin.saveDefaultConfig();
-        FileConfiguration config = plugin.getConfig();
+        FileConfiguration config = HamsterCorePlugin.getInstance().getConfig();
 
         ConfigurationSection datasourceConfig = config.getConfigurationSection("datasource");
         if (datasourceConfig == null) {
@@ -47,7 +44,7 @@ public final class CoreBukkitAPI extends CoreAPI {
     }
 
     @Override
-    public @NotNull AudienceProvider getAudienceProvider() {
+    public @NotNull BukkitAudiences getAudienceProvider() {
         return HamsterCorePlugin.getInstance().getAudienceProvider();
     }
 

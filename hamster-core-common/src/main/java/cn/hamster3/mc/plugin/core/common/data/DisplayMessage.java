@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
-public class Message {
+public class DisplayMessage {
     private Component message;
     private Component actionbar;
     private Title title;
@@ -25,7 +25,43 @@ public class Message {
      */
     private Sound sound;
 
-    public Message() {
+    public DisplayMessage() {
+    }
+
+    public static DisplayMessage message(@NotNull String message) {
+        return new DisplayMessage().setMessage(message);
+    }
+
+    public static DisplayMessage message(@NotNull Component message) {
+        return new DisplayMessage().setMessage(message);
+    }
+
+    public static DisplayMessage actionbar(@NotNull String message) {
+        return new DisplayMessage().setActionBar(message);
+    }
+
+    public static DisplayMessage actionbar(@NotNull Component message) {
+        return new DisplayMessage().setActionBar(message);
+    }
+
+    public static DisplayMessage title(@NotNull String title, @NotNull String subtitle) {
+        return new DisplayMessage().setTitle(title, subtitle);
+    }
+
+    public static DisplayMessage title(@NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+        return new DisplayMessage().setTitle(title, subtitle, fadeIn, stay, fadeOut);
+    }
+
+    public static DisplayMessage sound(@NotNull String sound) {
+        return new DisplayMessage().setSound(sound);
+    }
+
+    public static DisplayMessage sound(@NotNull String sound, float volume, float pitch) {
+        return new DisplayMessage().setSound(sound, volume, pitch);
+    }
+
+    public static DisplayMessage sound(@NotNull Sound sound) {
+        return new DisplayMessage().setSound(sound);
     }
 
     public void show(@NotNull Audience audience) {
@@ -43,7 +79,7 @@ public class Message {
         }
     }
 
-    public void show(@NotNull Audience audience, TextReplacementConfig replacement) {
+    public void show(@NotNull Audience audience, @NotNull TextReplacementConfig replacement) {
         if (message != null) {
             audience.sendMessage(message.compact().replaceText(replacement));
         }
@@ -80,37 +116,37 @@ public class Message {
     }
 
     @NotNull
-    public Message message(@NotNull String message) {
+    public DisplayMessage setMessage(@NotNull String message) {
         this.message = Component.text(message);
         return this;
     }
 
     @NotNull
-    public Message message(@NotNull Component message) {
+    public DisplayMessage setMessage(@NotNull Component message) {
         this.message = message;
         return this;
     }
 
     @NotNull
-    public Message actionbar(@NotNull String message) {
+    public DisplayMessage setActionBar(@NotNull String message) {
         this.actionbar = Component.text(message);
         return this;
     }
 
     @NotNull
-    public Message actionbar(@NotNull Component message) {
+    public DisplayMessage setActionBar(@NotNull Component message) {
         this.actionbar = message;
         return this;
     }
 
     @NotNull
-    public Message title(@NotNull String title, @NotNull String subtitle) {
+    public DisplayMessage setTitle(@NotNull String title, @NotNull String subtitle) {
         this.title = Title.title(Component.text(title), Component.text(subtitle));
         return this;
     }
 
     @NotNull
-    public Message title(@NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+    public DisplayMessage setTitle(@NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
         this.title = Title.title(
                 Component.text(title),
                 Component.text(subtitle),
@@ -124,13 +160,13 @@ public class Message {
     }
 
     @NotNull
-    public Message title(@NotNull Component title, @NotNull Component subtitle) {
+    public DisplayMessage setTitle(@NotNull Component title, @NotNull Component subtitle) {
         this.title = Title.title(title, subtitle);
         return this;
     }
 
     @NotNull
-    public Message title(@NotNull Component title, @NotNull Component subtitle, int fadeIn, int stay, int fadeOut) {
+    public DisplayMessage setTitle(@NotNull Component title, @NotNull Component subtitle, int fadeIn, int stay, int fadeOut) {
         this.title = Title.title(
                 title,
                 subtitle,
@@ -144,55 +180,55 @@ public class Message {
     }
 
     @NotNull
-    public Message title(@Nullable Title title) {
+    public DisplayMessage setTitle(@Nullable Title title) {
         this.title = title;
         return this;
     }
 
     @NotNull
     @SuppressWarnings("PatternValidation")
-    public Message sound(@NotNull String sound) {
+    public DisplayMessage setSound(@NotNull String sound) {
         this.sound = Sound.sound(Key.key(sound), Sound.Source.MASTER, 1, 1);
         return this;
     }
 
     @NotNull
     @SuppressWarnings("PatternValidation")
-    public Message sound(@NotNull String namespace, @NotNull String path) {
+    public DisplayMessage setSound(@NotNull String namespace, @NotNull String path) {
         this.sound = Sound.sound(Key.key(namespace, path), Sound.Source.MASTER, 1, 1);
         return this;
     }
 
     @NotNull
     @SuppressWarnings("PatternValidation")
-    public Message sound(@NotNull String sound, float volume, float pitch) {
+    public DisplayMessage setSound(@NotNull String sound, float volume, float pitch) {
         this.sound = Sound.sound(Key.key(sound), Sound.Source.MASTER, volume, pitch);
         return this;
     }
 
     @NotNull
     @SuppressWarnings("PatternValidation")
-    public Message sound(@NotNull String namespace, @NotNull String value, float volume, float pitch) {
+    public DisplayMessage setSound(@NotNull String namespace, @NotNull String value, float volume, float pitch) {
         this.sound = Sound.sound(Key.key(namespace, value), Sound.Source.MASTER, volume, pitch);
         return this;
     }
 
     @NotNull
     @SuppressWarnings("PatternValidation")
-    public Message sound(@NotNull String namespace, @NotNull String value, @NotNull Sound.Source source, float volume, float pitch) {
+    public DisplayMessage setSound(@NotNull String namespace, @NotNull String value, @NotNull Sound.Source source, float volume, float pitch) {
         this.sound = Sound.sound(Key.key(namespace, value), source, volume, pitch);
         return this;
     }
 
     @NotNull
-    public Message sound(@Nullable Sound sound) {
+    public DisplayMessage setSound(@Nullable Sound sound) {
         this.sound = sound;
         return this;
     }
 
     @NotNull
     @SuppressWarnings("UnusedReturnValue")
-    public Message json(@NotNull JsonElement element) {
+    public DisplayMessage fromJson(@NotNull JsonElement element) {
         if (!element.isJsonObject()) {
             message = Component.text(element.toString());
             return this;
