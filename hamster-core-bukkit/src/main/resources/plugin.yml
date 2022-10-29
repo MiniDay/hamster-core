@@ -1,6 +1,7 @@
 name: HamsterCore
 main: cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin
 version: ${version}
+api-version: 1.13
 
 author: MiniDay
 website: https://github.com/MiniDay/hamster-core
