@@ -36,19 +36,19 @@ public class DisplayMessage {
         return new DisplayMessage().setMessage(message);
     }
 
-    public static DisplayMessage actionbar(@NotNull String message) {
-        return new DisplayMessage().setActionBar(message);
+    public static DisplayMessage actionbar(@NotNull String actionbar) {
+        return new DisplayMessage().setActionBar(actionbar);
     }
 
-    public static DisplayMessage actionbar(@NotNull Component message) {
-        return new DisplayMessage().setActionBar(message);
+    public static DisplayMessage actionbar(@NotNull Component actionbar) {
+        return new DisplayMessage().setActionBar(actionbar);
     }
 
-    public static DisplayMessage title(@NotNull String title, @NotNull String subtitle) {
+    public static DisplayMessage title(@Nullable String title, @Nullable String subtitle) {
         return new DisplayMessage().setTitle(title, subtitle);
     }
 
-    public static DisplayMessage title(@NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+    public static DisplayMessage title(@Nullable String title, @Nullable String subtitle, int fadeIn, int stay, int fadeOut) {
         return new DisplayMessage().setTitle(title, subtitle, fadeIn, stay, fadeOut);
     }
 
@@ -146,40 +146,43 @@ public class DisplayMessage {
     }
 
     @NotNull
-    public DisplayMessage setMessage(@NotNull String message) {
-        this.message = Component.text(message);
+    public DisplayMessage setMessage(@Nullable String message) {
+        this.message = message == null ? null : Component.text(message);
         return this;
     }
 
     @NotNull
-    public DisplayMessage setMessage(@NotNull Component message) {
-        this.message = message.compact();
+    public DisplayMessage setMessage(@Nullable Component message) {
+        this.message = message == null ? null : message.compact();
         return this;
     }
 
     @NotNull
-    public DisplayMessage setActionBar(@NotNull String message) {
-        this.actionbar = Component.text(message);
+    public DisplayMessage setActionBar(@Nullable String actionbar) {
+        this.actionbar = actionbar == null ? null : Component.text(actionbar);
         return this;
     }
 
     @NotNull
-    public DisplayMessage setActionBar(@NotNull Component message) {
-        this.actionbar = message.compact();
+    public DisplayMessage setActionBar(@Nullable Component actionbar) {
+        this.actionbar = actionbar == null ? null : actionbar.compact();
         return this;
     }
 
     @NotNull
-    public DisplayMessage setTitle(@NotNull String title, @NotNull String subtitle) {
-        this.title = Title.title(Component.text(title), Component.text(subtitle));
-        return this;
-    }
-
-    @NotNull
-    public DisplayMessage setTitle(@NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+    public DisplayMessage setTitle(@Nullable String title, @Nullable String subtitle) {
         this.title = Title.title(
-                Component.text(title),
-                Component.text(subtitle),
+                title == null ? Component.empty() : Component.text(title),
+                subtitle == null ? Component.empty() : Component.text(subtitle)
+        );
+        return this;
+    }
+
+    @NotNull
+    public DisplayMessage setTitle(@Nullable String title, @Nullable String subtitle, int fadeIn, int stay, int fadeOut) {
+        this.title = Title.title(
+                title == null ? Component.empty() : Component.text(title),
+                subtitle == null ? Component.empty() : Component.text(subtitle),
                 Title.Times.times(
                         Ticks.duration(fadeIn),
                         Ticks.duration(stay),
@@ -190,16 +193,19 @@ public class DisplayMessage {
     }
 
     @NotNull
-    public DisplayMessage setTitle(@NotNull Component title, @NotNull Component subtitle) {
-        this.title = Title.title(title.compact(), subtitle.compact());
+    public DisplayMessage setTitle(@Nullable Component title, @Nullable Component subtitle) {
+        this.title = Title.title(
+                title == null ? Component.empty() : title.compact(),
+                subtitle == null ? Component.empty() : subtitle.compact()
+        );
         return this;
     }
 
     @NotNull
-    public DisplayMessage setTitle(@NotNull Component title, @NotNull Component subtitle, int fadeIn, int stay, int fadeOut) {
+    public DisplayMessage setTitle(@Nullable Component title, @Nullable Component subtitle, int fadeIn, int stay, int fadeOut) {
         this.title = Title.title(
-                title.compact(),
-                subtitle.compact(),
+                title == null ? Component.empty() : title.compact(),
+                subtitle == null ? Component.empty() : subtitle.compact(),
                 Title.Times.times(
                         Ticks.duration(fadeIn),
                         Ticks.duration(stay),
@@ -217,8 +223,8 @@ public class DisplayMessage {
 
     @NotNull
     @SuppressWarnings("PatternValidation")
-    public DisplayMessage setSound(@NotNull String sound) {
-        this.sound = Sound.sound(Key.key(sound), Sound.Source.MASTER, 1, 1);
+    public DisplayMessage setSound(@Nullable String sound) {
+        this.sound = sound == null ? null : Sound.sound(Key.key(sound), Sound.Source.MASTER, 1, 1);
         return this;
     }
 
