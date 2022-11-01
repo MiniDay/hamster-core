@@ -7,9 +7,19 @@ author: MiniDay
 website: https://github.com/MiniDay/hamster-core
 description: 仓鼠核心：Minecraft 插件开发通用工具包
 
+load: STARTUP
+
 softdepend:
   - Vault
   - PlayerPoints
+
+loadbefore:
+  - HamsterAPI
+
+libraries:
+  - 'net.kyori:adventure-platform-bukkit:4.1.2'
+  - 'com.squareup.okhttp3:okhttp:4.10.0'
+  - 'com.zaxxer:HikariCP:5.0.1'
 
 commands:
   HamsterCore:
