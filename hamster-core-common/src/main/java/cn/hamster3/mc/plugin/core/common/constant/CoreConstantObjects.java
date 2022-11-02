@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -34,9 +35,14 @@ public interface CoreConstantObjects {
             .create();
 
     /**
+     * 异步线程
+     */
+    ExecutorService WORKER_EXECUTOR = Executors.newCachedThreadPool(new NamedThreadFactory("HamsterCore - Executor"));
+    /**
      * 调度器线程
      */
-    ScheduledExecutorService SCHEDULED_EXECUTOR = Executors.newScheduledThreadPool(1, new NamedThreadFactory("HamsterCore - Scheduler"));
+    ScheduledExecutorService SCHEDULED_EXECUTOR = Executors
+            .newScheduledThreadPool(1, new NamedThreadFactory("HamsterCore - Scheduler"));
 
 }
 

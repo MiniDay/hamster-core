@@ -74,6 +74,8 @@ public class HamsterCorePlugin extends JavaPlugin {
         Logger logger = getLogger();
         long start = System.currentTimeMillis();
         logger.info("仓鼠核心正在关闭...");
+        CoreConstantObjects.WORKER_EXECUTOR.shutdownNow();
+        logger.info("已暂停 WORKER_EXECUTOR.");
         CoreConstantObjects.SCHEDULED_EXECUTOR.shutdownNow();
         logger.info("已暂停 SCHEDULED_EXECUTOR.");
         long time = System.currentTimeMillis() - start;
