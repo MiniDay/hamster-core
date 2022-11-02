@@ -6,7 +6,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 
 @SuppressWarnings("unused")
 public interface CoreConstantObjects {
@@ -30,50 +32,43 @@ public interface CoreConstantObjects {
             .serializeNulls()
             .setPrettyPrinting()
             .create();
-    /**
-     * JSON 解析器
-     */
-    JsonParser JSON_PARSER = new JsonParser();
 
-    /**
-     * 异步线程
-     */
-    ExecutorService WORKER_EXECUTOR = new ThreadPoolExecutor(1, Integer.MAX_VALUE, 60, TimeUnit.MINUTES, new SynchronousQueue<>(), new APIThreadFactory("HamsterCore - Executor"));
     /**
      * 调度器线程
      */
-    ScheduledExecutorService SCHEDULED_EXECUTOR = Executors.newScheduledThreadPool(1, new APIThreadFactory("HamsterCore - Scheduler"));
+    ScheduledExecutorService SCHEDULED_EXECUTOR = Executors.newScheduledThreadPool(1, new NamedThreadFactory("HamsterCore - Scheduler"));
 
-    class APIThreadFactory implements ThreadFactory {
-        private final String name;
-        private int threadID;
+}
 
-        public APIThreadFactory(String name) {
-            this.name = name;
-            threadID = 0;
-        }
+class NamedThreadFactory implements ThreadFactory {
+    private final String name;
+    private int threadID;
 
-        @Override
-        public Thread newThread(@NotNull Runnable runnable) {
-            threadID++;
-            return new Thread(runnable, name + "#" + threadID);
-        }
+    public NamedThreadFactory(String name) {
+        this.name = name;
+        threadID = 0;
     }
 
-    class MessageTypeAdapter implements JsonSerializer<DisplayMessage>, JsonDeserializer<DisplayMessage> {
-        public static final MessageTypeAdapter INSTANCE = new MessageTypeAdapter();
+    @Override
+    public Thread newThread(@NotNull Runnable runnable) {
+        threadID++;
+        return new Thread(runnable, name + "#" + threadID);
+    }
+}
 
-        private MessageTypeAdapter() {
-        }
+class MessageTypeAdapter implements JsonSerializer<DisplayMessage>, JsonDeserializer<DisplayMessage> {
+    public static final MessageTypeAdapter INSTANCE = new MessageTypeAdapter();
 
-        @Override
-        public DisplayMessage deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return new DisplayMessage().fromJson(json);
-        }
+    private MessageTypeAdapter() {
+    }
 
-        @Override
-        public JsonElement serialize(DisplayMessage src, Type typeOfSrc, JsonSerializationContext context) {
-            return src.saveToJson();
-        }
+    @Override
+    public DisplayMessage deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        return new DisplayMessage().fromJson(json);
+    }
+
+    @Override
+    public JsonElement serialize(DisplayMessage src, Type typeOfSrc, JsonSerializationContext context) {
+        return src.saveToJson();
     }
 }
