@@ -2,8 +2,8 @@ package cn.hamster3.mc.plugin.core.bukkit.page.handler;
 
 import cn.hamster3.mc.plugin.core.bukkit.page.ButtonGroup;
 import cn.hamster3.mc.plugin.core.bukkit.page.PageConfig;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -23,9 +23,11 @@ public class FixedPageHandler extends PageHandler {
 
     @Override
     public void initPage() {
+        if (inventory == null) {
+            inventory = Bukkit.createInventory(this, getConfig().getInventory().getSize(), getTitle());
+        }
         HumanEntity player = getPlayer();
 
-        Inventory inventory = getInventory();
         PageConfig config = getConfig();
         ButtonGroup group = getButtonGroup();
 

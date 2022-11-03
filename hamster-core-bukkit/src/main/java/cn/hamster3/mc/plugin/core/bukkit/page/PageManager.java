@@ -56,5 +56,4 @@ public class PageManager {
         PAGE_CONFIG.put(clazz.getName(), pageConfig);
         return pageConfig;
     }
-
 }

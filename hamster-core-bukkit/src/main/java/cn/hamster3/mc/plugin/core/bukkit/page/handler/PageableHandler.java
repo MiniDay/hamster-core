@@ -3,6 +3,7 @@ package cn.hamster3.mc.plugin.core.bukkit.page.handler;
 import cn.hamster3.mc.plugin.core.bukkit.page.ButtonGroup;
 import cn.hamster3.mc.plugin.core.bukkit.page.PageConfig;
 import cn.hamster3.mc.plugin.core.bukkit.page.PageElement;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 支持翻页的 GUI
@@ -22,6 +24,8 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public abstract class PageableHandler<E extends PageElement> extends FixedPageHandler {
+    private static final ItemStack EMPTY_STACK = new ItemStack(Material.AIR);
+
     private String previewButtonName = "preview";
     private String nextButtonName = "next";
     private String barrierButtonName = "barrier";
@@ -50,67 +54,6 @@ public abstract class PageableHandler<E extends PageElement> extends FixedPageHa
         return elementButtonName;
     }
 
-    public void initElementButton(@NotNull E element, @NotNull ItemStack displayItem, HashMap<String, String> replacer) {
-        element.replaceItemInfo(getPlayer(), displayItem, replacer);
-    }
-
-    @Override
-    public void initPage() {
-        super.initPage();
-        List<E> elements = getPageElements();
-        ButtonGroup group = getButtonGroup();
-        Inventory inventory = getInventory();
-        HumanEntity player = getPlayer();
-
-        ArrayList<Integer> buttonIndexes = group.getButtonAllIndex(elementButtonName);
-        int pageSize = buttonIndexes.size(); // 一页有多少个按钮
-        elementSlot = new HashMap<>();
-
-        HashMap<String, String> replacer = getReplacer();
-
-        for (int i = 0; i < pageSize; i++) {
-            // 元素在当前 page 中的索引位置
-            int elementIndex = page * pageSize + i;
-            // 按钮在 GUI 中的索引位置
-            int buttonIndex = buttonIndexes.get(i);
-
-            if (elementIndex >= elements.size()) {
-                inventory.setItem(buttonIndex, null);
-                continue;
-            }
-
-            E element = elements.get(elementIndex);
-            elementSlot.put(buttonIndex, element);
-
-            ItemStack elementDisplayItem = element.getDisplayItem(player);
-            if (elementDisplayItem != null) {
-                elementDisplayItem = elementDisplayItem.clone();
-                element.replaceItemInfo(player, elementDisplayItem, replacer);
-                inventory.setItem(buttonIndex, elementDisplayItem);
-                continue;
-            }
-
-            ItemStack button = group.getButton(getElementButtonName(element));
-            if (button == null) {
-                inventory.setItem(buttonIndex, null);
-                continue;
-            }
-
-            ItemStack elementItem = button.clone();
-            initElementButton(element, elementItem, replacer);
-            inventory.setItem(buttonIndex, elementItem);
-        }
-
-        if (page == 0) {
-            // 如果页面已在首页则撤掉上一页按钮
-            inventory.setItem(group.getButtonIndex(previewButtonName), group.getButton(barrierButtonName));
-        }
-        if (elements.size() <= (page + 1) * pageSize) {
-            // 如果页面显示超出已有元素数量则撤掉下一页按钮
-            inventory.setItem(group.getButtonIndex(nextButtonName), group.getButton(barrierButtonName));
-        }
-    }
-
     @Override
     public void onClickInside(@NotNull InventoryClickEvent event) {
         event.setCancelled(true);
@@ -128,6 +71,53 @@ public abstract class PageableHandler<E extends PageElement> extends FixedPageHa
         if (name.equalsIgnoreCase(previewButtonName)) {
             showPreviewPage();
         }
+    }
+
+    @Override
+    public void initPage() {
+        super.initPage();
+        List<E> elements = getPageElements();
+        ButtonGroup group = getButtonGroup();
+        Inventory inventory = getInventory();
+        HumanEntity player = getPlayer();
+
+        ArrayList<Integer> buttonIndexes = group.getButtonAllIndex(elementButtonName);
+        int pageSize = buttonIndexes.size(); // 一页有多少个按钮
+        elementSlot = new HashMap<>();
+
+        HashMap<String, String> variables = getVariables();
+
+        for (int i = 0; i < pageSize; i++) {
+            // 元素在当前 page 中的索引位置
+            int elementIndex = page * pageSize + i;
+            // 按钮在 GUI 中的索引位置
+            int buttonIndex = buttonIndexes.get(i);
+
+            if (elementIndex >= elements.size()) {
+                inventory.setItem(buttonIndex, null);
+                continue;
+            }
+
+            E element = elements.get(elementIndex);
+            elementSlot.put(buttonIndex, element);
+
+            ItemStack button = group.getButton(getElementButtonName(element));
+            ItemStack displayItem = element.getDisplayItem(player, button == null ? EMPTY_STACK : button, variables);
+            initElementButton(element, displayItem, variables);
+            inventory.setItem(buttonIndex, displayItem);
+        }
+
+        if (page == 0) {
+            // 如果页面已在首页则撤掉上一页按钮
+            inventory.setItem(group.getButtonIndex(previewButtonName), group.getButton(barrierButtonName));
+        }
+        if (elements.size() <= (page + 1) * pageSize) {
+            // 如果页面显示超出已有元素数量则撤掉下一页按钮
+            inventory.setItem(group.getButtonIndex(nextButtonName), group.getButton(barrierButtonName));
+        }
+    }
+
+    public void initElementButton(@NotNull E element, @NotNull ItemStack displayItem, @NotNull Map<String, String> variables) {
     }
 
     public void showPreviewPage() {
@@ -169,7 +159,8 @@ public abstract class PageableHandler<E extends PageElement> extends FixedPageHa
         this.elementButtonName = elementButtonName;
     }
 
-    public HashMap<String, String> getReplacer() {
+    @NotNull
+    public HashMap<String, String> getVariables() {
         return new HashMap<>();
     }
 }
