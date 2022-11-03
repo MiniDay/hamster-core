@@ -12,6 +12,7 @@ load: STARTUP
 softdepend:
   - Vault
   - PlayerPoints
+  - ProtocolLib
 
 loadbefore:
   - HamsterAPI

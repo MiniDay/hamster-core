@@ -1,6 +1,9 @@
 package cn.hamster3.mc.plugin.core.bukkit.util;
 
+import cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin;
 import cn.hamster3.mc.plugin.core.common.data.DisplayMessage;
+import com.comphenix.protocol.utility.StreamSerializer;
+import com.google.gson.JsonElement;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -12,8 +15,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.UUID;
+import java.util.logging.Level;
 
 @SuppressWarnings("unused")
 public final class BukkitUtils {
@@ -30,6 +36,7 @@ public final class BukkitUtils {
         return Bukkit.getServer().getClass().getName().split("\\.")[3];
     }
 
+    @SuppressWarnings("deprecation")
     @NotNull
     public static Package getNMSPackage() {
         String nmsVersion = getNMSVersion();
@@ -205,5 +212,41 @@ public final class BukkitUtils {
             );
         }
         return displayMessage;
+    }
+
+    public static String serializeItemStack(@Nullable ItemStack stack) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            HamsterCorePlugin.getInstance().getLogger().warning("ProtocolLib 前置插件未启用, 无法序列化物品！");
+            return null;
+        }
+        if (isEmptyItemStack(stack)) {
+            return null;
+        }
+        try {
+            return StreamSerializer.getDefault().serializeItemStack(stack);
+        } catch (IOException e) {
+            HamsterCorePlugin.getInstance().getLogger().log(Level.WARNING, "序列化物品 " + stack + " 时出错!", e);
+            return null;
+        }
+    }
+
+    public static ItemStack deserializeItemStack(@NotNull JsonElement element) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            HamsterCorePlugin.getInstance().getLogger().warning("ProtocolLib 前置插件未启用, 无法反序列化物品！");
+            return null;
+        }
+        try {
+            if (element.isJsonNull()) {
+                return null;
+            }
+            String s = element.getAsString();
+            if (s == null || s.length() < 1) {
+                return null;
+            }
+            return StreamSerializer.getDefault().deserializeItemStack(s);
+        } catch (Exception e) {
+            HamsterCorePlugin.getInstance().getLogger().log(Level.WARNING, "反序列化物品 " + element + " 时出错!", e);
+            return null;
+        }
     }
 }
