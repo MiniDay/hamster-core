@@ -1,6 +1,5 @@
 package cn.hamster3.mc.plugin.core.common.data;
 
-import cn.hamster3.mc.plugin.core.common.constant.CoreConstantObjects;
 import cn.hamster3.mc.plugin.core.common.util.SerializeUtils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -295,6 +294,6 @@ public class DisplayMessage {
 
     @Override
     public String toString() {
-        return CoreConstantObjects.GSON.toJson(this);
+        return saveToJson().toString();
     }
 }

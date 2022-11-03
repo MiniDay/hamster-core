@@ -1,10 +1,8 @@
 package cn.hamster3.mc.plugin.core.common.util;
 
-import cn.hamster3.mc.plugin.core.common.constant.CoreConstantObjects;
 import com.google.gson.JsonObject;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.title.Title;
 import org.jetbrains.annotations.NotNull;
@@ -46,8 +44,8 @@ public final class SerializeUtils {
     public static Title deserializeTitle(@NotNull JsonObject object) {
         if (object.has("times")) {
             return Title.title(
-                    CoreConstantObjects.GSON.fromJson(object.get("title"), Component.class),
-                    CoreConstantObjects.GSON.fromJson(object.get("subtitle"), Component.class),
+                    GsonComponentSerializer.gson().deserializeFromTree(object.get("title")),
+                    GsonComponentSerializer.gson().deserializeFromTree(object.get("subtitle")),
                     deserializeTitleTimes(object.getAsJsonObject("times"))
             );
         } else {

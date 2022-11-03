@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 @SuppressWarnings("unused")
-public final class SerializeUtils {
-    private SerializeUtils() {
+public final class BukkitSerializeUtils {
+    private BukkitSerializeUtils() {
     }
 
     @Nullable

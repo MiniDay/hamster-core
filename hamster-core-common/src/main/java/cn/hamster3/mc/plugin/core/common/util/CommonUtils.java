@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -64,10 +65,7 @@ public final class CommonUtils {
      */
     @NotNull
     public static String replaceColorCode(@Nullable String string, @NotNull String defaultValue) {
-        if (string == null) {
-            return replaceColorCode(defaultValue);
-        }
-        return replaceColorCode(string);
+        return replaceColorCode(Objects.requireNonNullElse(string, defaultValue));
     }
 
     /**
