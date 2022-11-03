@@ -17,7 +17,7 @@ public class Pair<K, V> implements Serializable {
     private final K key;
 
     /**
-     * Value of this this <code>Pair</code>.
+     * Value of this <code>Pair</code>.
      */
     @NotNull
     private final V value;
