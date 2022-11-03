@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -49,6 +50,23 @@ public final class BukkitSerializeUtils {
         } catch (Exception e) {
             HamsterCorePlugin.getInstance().getLogger().log(Level.WARNING, "反序列化物品 " + s + " 时出错!", e);
             return null;
+        }
+    }
+
+    @NotNull
+    public static ItemStack deserializeItemStack(@Nullable String s, @NotNull ItemStack defaultValue) {
+        if (s == null) {
+            return defaultValue;
+        }
+        if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            HamsterCorePlugin.getInstance().getLogger().warning("ProtocolLib 前置插件未启用, 无法反序列化物品！");
+            return defaultValue;
+        }
+        try {
+            return StreamSerializer.getDefault().deserializeItemStack(s);
+        } catch (Exception e) {
+            HamsterCorePlugin.getInstance().getLogger().log(Level.WARNING, "反序列化物品 " + s + " 时出错!", e);
+            return defaultValue;
         }
     }
 
