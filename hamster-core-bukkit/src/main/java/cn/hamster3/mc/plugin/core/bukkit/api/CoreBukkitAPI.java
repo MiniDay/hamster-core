@@ -27,8 +27,10 @@ public final class CoreBukkitAPI extends CoreAPI {
         hikariConfig.setPassword(datasourceConfig.getString("password"));
         hikariConfig.setMaximumPoolSize(datasourceConfig.getInt("maximum-pool-size", 3));
         hikariConfig.setMinimumIdle(datasourceConfig.getInt("minimum-idle", 1));
-        hikariConfig.setIdleTimeout(datasourceConfig.getLong("idle-timeout", 5 * 60 * 1000));
-        hikariConfig.setMaxLifetime(datasourceConfig.getLong("max-lifetime", 0));
+        hikariConfig.setIdleTimeout(datasourceConfig.getLong("idle-timeout", 10 * 60 * 1000));
+        hikariConfig.setMaxLifetime(datasourceConfig.getLong("max-lifetime", 30 * 60 * 1000));
+        hikariConfig.setValidationTimeout(datasourceConfig.getLong("validation-timeout", 5000));
+        hikariConfig.setPoolName("HamsterCore-Pool");
         datasource = new HikariDataSource(hikariConfig);
     }
 

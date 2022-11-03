@@ -19,6 +19,9 @@ public final class CoreBungeeAPI extends CoreAPI {
         Configuration config = BungeeCordUtils.getPluginConfig(plugin);
 
         Configuration datasourceConfig = config.getSection("datasource");
+        if (datasourceConfig == null) {
+            throw new IllegalArgumentException("配置文件中未找到 datasource 节点！");
+        }
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(datasourceConfig.getString("driver"));
         hikariConfig.setJdbcUrl(datasourceConfig.getString("url"));
@@ -26,8 +29,10 @@ public final class CoreBungeeAPI extends CoreAPI {
         hikariConfig.setPassword(datasourceConfig.getString("password"));
         hikariConfig.setMaximumPoolSize(datasourceConfig.getInt("maximum-pool-size", 3));
         hikariConfig.setMinimumIdle(datasourceConfig.getInt("minimum-idle", 1));
-        hikariConfig.setIdleTimeout(datasourceConfig.getLong("idle-timeout", 5 * 60 * 1000));
-        hikariConfig.setMaxLifetime(datasourceConfig.getLong("max-lifetime", 0));
+        hikariConfig.setIdleTimeout(datasourceConfig.getLong("idle-timeout", 10 * 60 * 1000));
+        hikariConfig.setMaxLifetime(datasourceConfig.getLong("max-lifetime", 30 * 60 * 1000));
+        hikariConfig.setValidationTimeout(datasourceConfig.getLong("validation-timeout", 5000));
+        hikariConfig.setPoolName("HamsterCore-Pool");
         datasource = new HikariDataSource(hikariConfig);
     }
 
