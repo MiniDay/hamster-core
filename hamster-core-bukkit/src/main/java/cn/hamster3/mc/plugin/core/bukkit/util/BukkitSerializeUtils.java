@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -21,11 +20,11 @@ public final class BukkitSerializeUtils {
 
     @Nullable
     public static String serializeItemStack(@Nullable ItemStack stack) {
-        if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-            HamsterCorePlugin.getInstance().getLogger().warning("ProtocolLib 前置插件未启用, 无法序列化物品！");
+        if (BukkitUtils.isEmptyItemStack(stack)) {
             return null;
         }
-        if (BukkitUtils.isEmptyItemStack(stack)) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            HamsterCorePlugin.getInstance().getLogger().warning("ProtocolLib 前置插件未启用, 无法序列化物品！");
             return null;
         }
         try {
@@ -37,28 +36,27 @@ public final class BukkitSerializeUtils {
     }
 
     @Nullable
-    public static ItemStack deserializeItemStack(@NotNull JsonElement element) {
+    public static ItemStack deserializeItemStack(@Nullable String s) {
+        if (s == null) {
+            return null;
+        }
         if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
             HamsterCorePlugin.getInstance().getLogger().warning("ProtocolLib 前置插件未启用, 无法反序列化物品！");
             return null;
         }
         try {
-            if (element.isJsonNull()) {
-                return null;
-            }
-            String s = element.getAsString();
-            if (s == null || s.length() < 1) {
-                return null;
-            }
             return StreamSerializer.getDefault().deserializeItemStack(s);
         } catch (Exception e) {
-            HamsterCorePlugin.getInstance().getLogger().log(Level.WARNING, "反序列化物品 " + element + " 时出错!", e);
+            HamsterCorePlugin.getInstance().getLogger().log(Level.WARNING, "反序列化物品 " + s + " 时出错!", e);
             return null;
         }
     }
 
     @Nullable
-    public static JsonObject serializePotionEffect(@NotNull PotionEffect effect) {
+    public static JsonObject serializePotionEffect(@Nullable PotionEffect effect) {
+        if (effect == null) {
+            return null;
+        }
         try {
             JsonObject object = new JsonObject();
             object.addProperty("type", effect.getType().getName());
@@ -72,8 +70,8 @@ public final class BukkitSerializeUtils {
     }
 
     @Nullable
-    public static PotionEffect deserializePotionEffect(@NotNull JsonElement element) {
-        if (!element.isJsonObject()) {
+    public static PotionEffect deserializePotionEffect(@Nullable JsonElement element) {
+        if (element == null || !element.isJsonObject()) {
             return null;
         }
         JsonObject effectObject = element.getAsJsonObject();
