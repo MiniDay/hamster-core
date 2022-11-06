@@ -1,18 +1,26 @@
 package cn.hamster3.mc.plugin.core.bukkit.util;
 
+import cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin;
 import cn.hamster3.mc.plugin.core.common.data.DisplayMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -206,5 +214,25 @@ public final class BukkitUtils {
             );
         }
         return displayMessage;
+    }
+
+    @NotNull
+    public static YamlConfiguration getPluginConfig(@NotNull Plugin plugin, @NotNull String filename) {
+        File dataFolder = plugin.getDataFolder();
+        if (dataFolder.mkdirs()) {
+            HamsterCorePlugin.getInstance().getLogger().info("已为插件 %s 生成存档文件夹...");
+        }
+        File file = new File(dataFolder, filename);
+        if (!file.exists()) {
+            try (InputStream stream = plugin.getClass().getResourceAsStream("/" + filename)) {
+                if (stream == null) {
+                    throw new IllegalArgumentException("在插件 " + plugin.getName() + " 的文件内部未找到 " + filename + " !");
+                }
+                Files.copy(stream, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new IllegalArgumentException("在插件 " + plugin.getName() + " 内部读取文件 " + filename + " 时发生错误!");
+            }
+        }
+        return YamlConfiguration.loadConfiguration(file);
     }
 }

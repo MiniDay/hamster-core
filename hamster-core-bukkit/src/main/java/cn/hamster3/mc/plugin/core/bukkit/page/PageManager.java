@@ -1,15 +1,12 @@
 package cn.hamster3.mc.plugin.core.bukkit.page;
 
 import cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin;
+import cn.hamster3.mc.plugin.core.bukkit.util.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 
 public class PageManager {
@@ -33,26 +30,9 @@ public class PageManager {
         if (pageFolder.mkdirs()) {
             HamsterCorePlugin.getInstance().getLogger().info("为 " + pluginName + " 创建页面配置文件夹...");
         }
-        String pageFileName = clazz.getSimpleName() + ".yml";
-        File pageFile = new File(pageFolder, pageFileName);
-        if (pageFile.exists()) {
-            YamlConfiguration configuration = YamlConfiguration.loadConfiguration(pageFile);
-            pageConfig = new PageConfig(plugin, configuration);
-            PAGE_CONFIG.put(clazz.getName(), pageConfig);
-            return pageConfig;
-        }
-        InputStream resource = plugin.getResource("/" + pageFileName);
-        if (resource == null) {
-            throw new IllegalArgumentException("在插件 " + pluginName + " 的文件内部未找到 " + pageFileName + " !");
-        }
-        try {
-            Files.copy(resource, pageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            resource.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(pageFile);
-        pageConfig = new PageConfig(plugin, configuration);
+        String filename = clazz.getSimpleName() + ".yml";
+        YamlConfiguration config = BukkitUtils.getPluginConfig(plugin, filename);
+        pageConfig = new PageConfig(plugin, config);
         PAGE_CONFIG.put(clazz.getName(), pageConfig);
         return pageConfig;
     }

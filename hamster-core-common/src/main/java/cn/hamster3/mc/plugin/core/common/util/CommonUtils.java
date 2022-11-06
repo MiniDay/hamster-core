@@ -18,9 +18,9 @@ public final class CommonUtils {
     }
 
     public static void zipCompressionFolder(@NotNull File folder, @NotNull File zipFile) throws IOException {
-        ZipOutputStream stream = new ZipOutputStream(Files.newOutputStream(zipFile.toPath()));
-        putFileToZipStream(stream, "", folder);
-        stream.close();
+        try (ZipOutputStream stream = new ZipOutputStream(Files.newOutputStream(zipFile.toPath()))) {
+            putFileToZipStream(stream, "", folder);
+        }
     }
 
     public static void putFileToZipStream(@NotNull ZipOutputStream stream, @NotNull String path, @NotNull File file) throws IOException {

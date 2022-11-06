@@ -17,6 +17,7 @@ public final class ParentLoreCommand extends ParentCommand {
         addChildCommand(LoreSetCommand.INSTANCE);
         addChildCommand(LoreClearCommand.INSTANCE);
         addChildCommand(LoreNameCommand.INSTANCE);
+        addChildCommand(LoreCustomModelDataCommand.INSTANCE);
     }
 
     @Override
