@@ -34,6 +34,11 @@ public abstract class PageableHandler<E extends PageElement> extends FixedPageHa
     private int page;
     private HashMap<Integer, E> elementSlot;
 
+    public PageableHandler(@NotNull HumanEntity player) {
+        super(player);
+        this.page = 0;
+    }
+
     public PageableHandler(@NotNull HumanEntity player, int page) {
         super(player);
         this.page = page;
