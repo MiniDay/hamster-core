@@ -1,9 +1,9 @@
 package cn.hamster3.mc.plugin.core.bukkit.page.handler;
 
-import cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin;
 import cn.hamster3.mc.plugin.core.bukkit.page.ButtonGroup;
 import cn.hamster3.mc.plugin.core.bukkit.page.PageConfig;
 import cn.hamster3.mc.plugin.core.bukkit.page.PageManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -85,11 +85,11 @@ public abstract class PageHandler implements InventoryHolder {
         if (init) {
             initPage();
         }
-        HamsterCorePlugin.sync(() -> player.openInventory(getInventory()));
+        Bukkit.getScheduler().runTask(config.getPlugin(), () -> player.openInventory(getInventory()));
     }
 
     public void close() {
-        HamsterCorePlugin.sync(player::closeInventory);
+        Bukkit.getScheduler().runTask(config.getPlugin(), player::closeInventory);
     }
 
     @NotNull

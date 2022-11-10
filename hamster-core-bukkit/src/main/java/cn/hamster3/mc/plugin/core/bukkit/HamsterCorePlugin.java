@@ -27,10 +27,6 @@ public class HamsterCorePlugin extends JavaPlugin {
         return instance;
     }
 
-    public static void sync(Runnable runnable) {
-        Bukkit.getScheduler().runTask(instance, runnable);
-    }
-
     @Override
     public void onLoad() {
         instance = this;
