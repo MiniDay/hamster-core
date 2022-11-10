@@ -5,45 +5,36 @@ import com.google.gson.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 
 @SuppressWarnings("unused")
-public interface CoreConstantObjects {
+public abstract class CoreConstantObjects {
     /**
-     * Minecraft 默认指定的空 UUID
+     * 异步线程
      */
-    UUID NIL_UUID = new UUID(0L, 0L);
-
+    public static final ExecutorService WORKER_EXECUTOR = Executors.newCachedThreadPool(new NamedThreadFactory("HamsterCore - Executor"));
+    /**
+     * 调度器线程
+     */
+    public static final ScheduledExecutorService SCHEDULED_EXECUTOR = Executors
+            .newScheduledThreadPool(1, new NamedThreadFactory("HamsterCore - Scheduler"));
     /**
      * GSON 工具
      */
-    Gson GSON = new GsonBuilder()
+    public static Gson GSON = new GsonBuilder()
             .registerTypeAdapter(DisplayMessage.class, MessageTypeAdapter.INSTANCE)
             .create();
-
     /**
      * GSON 工具，会使用格式化输出、且解析中包含null参数
      */
-    Gson GSON_HUMAN = new GsonBuilder()
+    public static Gson GSON_HUMAN = new GsonBuilder()
             .registerTypeAdapter(DisplayMessage.class, MessageTypeAdapter.INSTANCE)
             .serializeNulls()
             .setPrettyPrinting()
             .create();
-
-    /**
-     * 异步线程
-     */
-    ExecutorService WORKER_EXECUTOR = Executors.newCachedThreadPool(new NamedThreadFactory("HamsterCore - Executor"));
-    /**
-     * 调度器线程
-     */
-    ScheduledExecutorService SCHEDULED_EXECUTOR = Executors
-            .newScheduledThreadPool(1, new NamedThreadFactory("HamsterCore - Scheduler"));
-
 }
 
 class NamedThreadFactory implements ThreadFactory {

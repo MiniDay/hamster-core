@@ -169,8 +169,7 @@ public class ButtonGroup {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ButtonGroup)) return false;
-        ButtonGroup that = (ButtonGroup) o;
+        if (!(o instanceof ButtonGroup that)) return false;
         return name.equals(that.name);
     }
 
