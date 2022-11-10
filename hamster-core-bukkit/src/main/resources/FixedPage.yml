@@ -1,0 +1,57 @@
+title: "&c固定页面"
+
+graphic:
+  - "####!####"
+  - "# 1 2 3 #"
+  - "#########"
+
+groups:
+  default:
+    '#': "barrier"
+    '1': "accept"
+    '2': "deny"
+    '3': "close"
+    '!': "info"
+
+sounds:
+  "default": "UI_BUTTON_CLICK"
+  "accept": "ENTITY_PLAYER_LEVELUP"
+  "deny": "BLOCK_ANVIL_HIT"
+
+buttons:
+  'barrier':
+    ==: org.bukkit.inventory.ItemStack
+    type: STAINED_GLASS_PANE
+    damage: 4
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "§c屏障"
+  'accept':
+    ==: org.bukkit.inventory.ItemStack
+    type: ARROW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "§a同意"
+  'deny':
+    ==: org.bukkit.inventory.ItemStack
+    type: BARRIER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "§c拒绝"
+  'close':
+    ==: org.bukkit.inventory.ItemStack
+    type: REDSTONE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "§c关闭"
+  'info':
+    ==: org.bukkit.inventory.ItemStack
+    type: REDSTONE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "§c页面信息展示"

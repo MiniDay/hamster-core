@@ -9,15 +9,13 @@ import cn.hamster3.mc.plugin.core.bukkit.hook.VaultAPI;
 import cn.hamster3.mc.plugin.core.bukkit.listener.CallbackListener;
 import cn.hamster3.mc.plugin.core.bukkit.listener.DebugListener;
 import cn.hamster3.mc.plugin.core.bukkit.page.listener.PageListener;
-import cn.hamster3.mc.plugin.core.bukkit.util.BukkitSerializeUtils;
+import cn.hamster3.mc.plugin.core.bukkit.util.ItemStackAdapter;
 import cn.hamster3.mc.plugin.core.common.constant.CoreConstantObjects;
-import com.google.gson.*;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 public class HamsterCorePlugin extends JavaPlugin {
@@ -94,26 +92,3 @@ public class HamsterCorePlugin extends JavaPlugin {
     }
 }
 
-class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
-    public static final ItemStackAdapter INSTANCE = new ItemStackAdapter();
-
-    private ItemStackAdapter() {
-    }
-
-    @Override
-    public ItemStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        if (json.isJsonNull()) {
-            return null;
-        }
-        return BukkitSerializeUtils.deserializeItemStack(json.getAsString());
-    }
-
-    @Override
-    public JsonElement serialize(ItemStack src, Type typeOfSrc, JsonSerializationContext context) {
-        String s = BukkitSerializeUtils.serializeItemStack(src);
-        if (s == null) {
-            return JsonNull.INSTANCE;
-        }
-        return new JsonPrimitive(s);
-    }
-}

@@ -10,6 +10,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -106,10 +107,9 @@ public abstract class PageableHandler<E extends PageElement> extends FixedPageHa
             E element = elements.get(elementIndex);
             elementSlot.put(buttonIndex, element);
 
-            ItemStack button = group.getButton(getElementButtonName(element));
-            ItemStack displayItem = element.getDisplayItem(player, button == null ? EMPTY_STACK : button, variables);
-            initElementButton(element, displayItem, variables);
-            inventory.setItem(buttonIndex, displayItem);
+            String buttonName = getElementButtonName(element);
+            ItemStack buttonItem = group.getButton(buttonName);
+            initElementButton(buttonIndex, element, buttonItem, variables);
         }
 
         if (page == 0) {
@@ -122,7 +122,31 @@ public abstract class PageableHandler<E extends PageElement> extends FixedPageHa
         }
     }
 
-    public void initElementButton(@NotNull E element, @NotNull ItemStack displayItem, @NotNull Map<String, String> variables) {
+    public void initElementButton(int index, @NotNull E element, @NotNull ItemStack stack, @NotNull Map<String, String> variables) {
+        ItemMeta meta = stack.getItemMeta();
+        if (meta == null) {
+            return;
+        }
+        if (meta.hasDisplayName()) {
+            String displayName = meta.getDisplayName();
+            for (Map.Entry<String, String> entry : variables.entrySet()) {
+                displayName = displayName.replace(entry.getKey(), entry.getValue());
+            }
+            meta.setDisplayName(displayName);
+        }
+        List<String> lore = meta.getLore();
+        if (lore != null) {
+            for (int i = 0; i < lore.size(); i++) {
+                String s = lore.get(i);
+                for (Map.Entry<String, String> entry : variables.entrySet()) {
+                    s = s.replace(entry.getKey(), entry.getValue());
+                }
+                lore.set(i, s);
+            }
+            meta.setLore(lore);
+        }
+        stack.setItemMeta(meta);
+        inventory.setItem(index, stack);
     }
 
     public void showPreviewPage() {

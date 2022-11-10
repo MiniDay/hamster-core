@@ -1,0 +1,48 @@
+title: "&c分页页面"
+
+graphic:
+  - "#########"
+  - "#       #"
+  - "# 11111 #"
+  - "# 11111 #"
+  - "#       #"
+  - "<#######>"
+
+groups:
+  default:
+    '#': "barrier"
+    '1': "element"
+
+sounds:
+  "default": "UI_BUTTON_CLICK"
+
+buttons:
+  'barrier':
+    ==: org.bukkit.inventory.ItemStack
+    type: STAINED_GLASS_PANE
+    damage: 4
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "§c屏障"
+  'preview':
+    ==: org.bukkit.inventory.ItemStack
+    type: REDSTONE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "§c上一页"
+  'next':
+    ==: org.bukkit.inventory.ItemStack
+    type: ARROW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "§a下一页"
+  'element':
+    ==: org.bukkit.inventory.ItemStack
+    type: ARROW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "§a玩家信息"
