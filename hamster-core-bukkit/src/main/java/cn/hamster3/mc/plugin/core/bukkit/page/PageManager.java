@@ -1,12 +1,15 @@
 package cn.hamster3.mc.plugin.core.bukkit.page;
 
 import cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin;
-import cn.hamster3.mc.plugin.core.bukkit.util.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 
 public class PageManager {
@@ -31,8 +34,17 @@ public class PageManager {
             HamsterCorePlugin.getInstance().getLogger().info("为 " + pluginName + " 创建页面配置文件夹...");
         }
         String filename = clazz.getSimpleName() + ".yml";
-        YamlConfiguration config = BukkitUtils.getPluginConfig(plugin, filename);
-        pageConfig = new PageConfig(plugin, config);
+        File pageFile = new File(pageFolder, filename);
+        try (InputStream resource = plugin.getResource("/pages/" + filename)) {
+            if (resource == null) {
+                throw new IllegalArgumentException("为插件 " + pluginName + " 加载页面配置文件 " + filename + " 时出错!");
+            }
+            Files.copy(resource, pageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(pageFile);
+            pageConfig = new PageConfig(plugin, config);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("为插件 " + pluginName + " 加载页面配置文件 " + filename + " 时出错!");
+        }
         PAGE_CONFIG.put(clazz.getName(), pageConfig);
         return pageConfig;
     }
