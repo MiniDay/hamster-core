@@ -4,6 +4,7 @@ import cn.hamster3.mc.plugin.core.bukkit.HamsterCorePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +16,8 @@ import java.util.HashMap;
 public class PageManager {
     private static final HashMap<String, PageConfig> PAGE_CONFIG = new HashMap<>();
 
-    public static PageConfig getPageConfig(Class<?> clazz) {
+    @NotNull
+    public static PageConfig getPageConfig(@NotNull Class<?> clazz) {
         PageConfig pageConfig = PAGE_CONFIG.get(clazz.getName());
         if (pageConfig != null) {
             return pageConfig;
@@ -33,7 +35,19 @@ public class PageManager {
         if (pageFolder.mkdirs()) {
             HamsterCorePlugin.getInstance().getLogger().info("为 " + pluginName + " 创建页面配置文件夹...");
         }
-        String filename = clazz.getSimpleName() + ".yml";
+        pageConfig = getPageConfig(plugin, clazz.getSimpleName());
+        PAGE_CONFIG.put(clazz.getName(), pageConfig);
+        return pageConfig;
+    }
+
+    @NotNull
+    public static PageConfig getPageConfig(@NotNull Plugin plugin, @NotNull String pageName) {
+        String pluginName = plugin.getName();
+        File pageFolder = new File(plugin.getDataFolder(), "pages");
+        if (pageFolder.mkdirs()) {
+            HamsterCorePlugin.getInstance().getLogger().info("为 " + pluginName + " 创建页面配置文件夹...");
+        }
+        String filename = pageName + ".yml";
         File pageFile = new File(pageFolder, filename);
         try (InputStream resource = plugin.getResource("/pages/" + filename)) {
             if (resource == null) {
@@ -41,11 +55,9 @@ public class PageManager {
             }
             Files.copy(resource, pageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             YamlConfiguration config = YamlConfiguration.loadConfiguration(pageFile);
-            pageConfig = new PageConfig(plugin, config);
+            return new PageConfig(plugin, config);
         } catch (IOException e) {
             throw new IllegalArgumentException("为插件 " + pluginName + " 加载页面配置文件 " + filename + " 时出错!");
         }
-        PAGE_CONFIG.put(clazz.getName(), pageConfig);
-        return pageConfig;
     }
 }
