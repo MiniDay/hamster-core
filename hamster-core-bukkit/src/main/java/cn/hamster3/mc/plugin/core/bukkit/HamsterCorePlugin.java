@@ -11,6 +11,9 @@ import cn.hamster3.mc.plugin.core.bukkit.listener.DebugListener;
 import cn.hamster3.mc.plugin.core.bukkit.page.listener.PageListener;
 import cn.hamster3.mc.plugin.core.bukkit.util.ItemStackAdapter;
 import cn.hamster3.mc.plugin.core.common.constant.CoreConstantObjects;
+import cn.hamster3.mc.plugin.core.common.data.DisplayMessage;
+import cn.hamster3.mc.plugin.core.common.util.MessageTypeAdapter;
+import com.google.gson.GsonBuilder;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -36,7 +39,8 @@ public class HamsterCorePlugin extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
         logger.info("已读取配置文件.");
-        CoreConstantObjects.GSON = CoreConstantObjects.GSON.newBuilder()
+        CoreConstantObjects.GSON = new GsonBuilder()
+                .registerTypeAdapter(DisplayMessage.class, MessageTypeAdapter.INSTANCE)
                 .registerTypeAdapter(ItemStack.class, ItemStackAdapter.INSTANCE)
                 .create();
         CoreBukkitAPI.init();

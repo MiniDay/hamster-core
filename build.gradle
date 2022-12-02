@@ -20,8 +20,6 @@ subprojects {
 
     configurations {
         shade
-        api.extendsFrom apiShade
-        implementation.extendsFrom implementationShade
     }
 
     dependencies {

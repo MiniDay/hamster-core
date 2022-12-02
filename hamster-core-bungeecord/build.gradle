@@ -2,17 +2,27 @@ setArchivesBaseName("HamsterCore-BungeeCord")
 
 evaluationDependsOn(':hamster-core-common')
 
+configurations {
+    oldJar
+}
+
 dependencies {
-    apiShade(project(":hamster-core-common")) { transitive = false }
+    api(project(":hamster-core-common")) { transitive = false }
+    shade(project(":hamster-core-common")) { transitive = false }
 
     compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
 
     // https://mvnrepository.com/artifact/net.kyori/adventure-platform-bungeecord
-    apiShade 'net.kyori:adventure-platform-bungeecord:4.1.2'
+    api 'net.kyori:adventure-platform-bungeecord:4.1.2'
+    shade 'net.kyori:adventure-platform-bungeecord:4.1.2'
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
-    apiShade 'com.squareup.okhttp3:okhttp:4.10.0'
+    api 'com.squareup.okhttp3:okhttp:4.10.0'
+    shade 'com.squareup.okhttp3:okhttp:4.10.0'
     // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
-    implementationShade 'com.zaxxer:HikariCP:5.0.1'
+    compileOnly 'com.zaxxer:HikariCP:5.0.1'
+    shade 'com.zaxxer:HikariCP:5.0.1'
+    //noinspection GradlePackageUpdate
+    oldJar 'com.zaxxer:HikariCP:4.0.3'
 }
 
 processResources {
@@ -31,14 +41,26 @@ tasks.create("shadowJar", Jar) {
             },
             configurations.shade.collect {
                 it.isDirectory() ? it : zipTree(it)
-            },
-            configurations.apiShade.collect {
-                it.isDirectory() ? it : zipTree(it)
-            },
-            configurations.implementationShade.collect {
-                it.isDirectory() ? it : zipTree(it)
             }
     ])
     destinationDir(getRootProject().buildDir)
 }
 tasks.build.dependsOn(shadowJar)
+
+tasks.create("oldJar", Jar) {
+    dependsOn("jar")
+    setClassifier("Old")
+    from([
+            tasks.jar.outputs.files.collect {
+                it.isDirectory() ? it : zipTree(it)
+            },
+            configurations.shade.collect {
+                it.isDirectory() ? it : zipTree(it)
+            },
+            configurations.oldJar.collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
+    ])
+    destinationDir(getRootProject().buildDir)
+}
+tasks.build.dependsOn(oldJar)
