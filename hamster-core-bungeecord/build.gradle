@@ -9,15 +9,18 @@ configurations {
 dependencies {
     api(project(":hamster-core-common")) { transitive = false }
     shade(project(":hamster-core-common")) { transitive = false }
+    oldJar(project(":hamster-core-common")) { transitive = false }
 
     compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
 
     // https://mvnrepository.com/artifact/net.kyori/adventure-platform-bungeecord
     api 'net.kyori:adventure-platform-bungeecord:4.1.2'
     shade 'net.kyori:adventure-platform-bungeecord:4.1.2'
+    oldJar 'net.kyori:adventure-platform-bungeecord:4.1.2'
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     api 'com.squareup.okhttp3:okhttp:4.10.0'
     shade 'com.squareup.okhttp3:okhttp:4.10.0'
+    oldJar 'com.squareup.okhttp3:okhttp:4.10.0'
     // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
     compileOnly 'com.zaxxer:HikariCP:5.0.1'
     shade 'com.zaxxer:HikariCP:5.0.1'
@@ -52,9 +55,6 @@ tasks.create("oldJar", Jar) {
     setClassifier("Old")
     from([
             tasks.jar.outputs.files.collect {
-                it.isDirectory() ? it : zipTree(it)
-            },
-            configurations.shade.collect {
                 it.isDirectory() ? it : zipTree(it)
             },
             configurations.oldJar.collect {
