@@ -11,6 +11,8 @@ graphic:
 groups:
   default:
     '#': "barrier"
+    '<': "preview"
+    '>': "next"
     '1': "element"
 
 sounds:

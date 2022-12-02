@@ -42,10 +42,11 @@ public class LoreCustomModelDataCommand extends ChildCommand {
     @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (!(sender instanceof Player player)) {
+        if (!(sender instanceof Player)) {
             CoreMessage.COMMAND_MUST_USED_BY_PLAYER.show(sender);
             return true;
         }
+        Player player = (Player) sender;
         ItemStack stack = player.getItemInHand();
         if (BukkitUtils.isEmptyItemStack(stack)) {
             CoreMessage.COMMAND_LORE_HAND_EMPTY.show(player);
